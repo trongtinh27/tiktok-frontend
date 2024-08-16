@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import HeadlessTippy from "@tippyjs/react/headless";
 
-import * as searchServices from "~/apiServices/searchServices";
+import * as searchService from "~/services/searchService";
 import HistoryItem from "~/components/HistoryItem";
 import AccountItem from "~/components/AccountItem";
 import { SearchIcon } from "~/components/Icons";
@@ -32,7 +32,7 @@ function Search() {
     const fetchApi = async () => {
       setLoading(true);
 
-      const result = await searchServices.search(debounce);
+      const result = await searchService.search(debounce);
       setSearchResult(result);
 
       setLoading(false);
@@ -44,6 +44,13 @@ function Search() {
     setSearchValue("");
     setSearchResult([]);
     inputRef.current.focus();
+  };
+
+  const handleChange = (e) => {
+    const searchValue = e.target.value;
+    if (!searchValue.startsWith(" ")) {
+      setSearchValue(searchValue);
+    }
   };
 
   const handleHideResult = () => {
@@ -74,9 +81,7 @@ function Search() {
           value={searchValue}
           ref={inputRef}
           placeholder="Tìm kiếm"
-          onChange={(e) => {
-            setSearchValue(e.target.value);
-          }}
+          onChange={handleChange}
           onFocus={() => {
             setShowResult(true);
           }}
@@ -107,7 +112,10 @@ function Search() {
           )
         }
         <span className={cx("span-spliter")}></span>
-        <button className={cx("search-btn")}>
+        <button
+          className={cx("search-btn")}
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <div className={cx("search-icon")}>
             <SearchIcon />
           </div>

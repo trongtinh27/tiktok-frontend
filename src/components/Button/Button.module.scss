@@ -7,8 +7,7 @@
   user-select: none;
   cursor: pointer;
   box-sizing: border-box;
-  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
-    sans-serif;
+  font-family: var(--font-family);
   font-size: 16px;
   line-height: 21px;
   margin-left: 16px;

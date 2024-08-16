@@ -6,6 +6,8 @@
   --text-color: #333;
   --white-color: rgb(255, 255, 255);
   --white-text: rgba(255, 255, 255, 0.9);
+
+  --font-family: TikTokFont, Arial, Tahoma, sans-serif;
 }
 
 * {
@@ -19,7 +21,7 @@ html {
 }
 
 body {
-  font-family: "TikTokFont";
+  font-family: var(--font-family);
   font-size: 1.6rem;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
@@ -27,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-y: overlay;
 }
 
 body {
@@ -97,9 +100,11 @@ a[href] {
 
 ::-webkit-scrollbar-thumb {
   background-color: rgb(18, 18, 18);
-  border-radius: 40px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-track {
   background-color: #000;
 }
+
+// scrollbar css

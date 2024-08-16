@@ -41,8 +41,7 @@
 }
 
 .header-title {
-  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
-    sans-serif;
+  font-family: var(--font-family);
   font-weight: 600;
   font-size: 16px;
   line-height: 21px;
@@ -52,6 +51,11 @@
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
+}
+
+.body-menu {
+  overflow-y: auto;
+  max-height: min(100vh - 96px - 60px, 734px);
 }
 
 .logout {

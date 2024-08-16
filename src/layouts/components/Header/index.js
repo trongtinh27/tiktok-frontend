@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import config from "~/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEarthAsia,
@@ -119,7 +120,7 @@ function Header() {
       <div className={cx("inner")}>
         <div className={cx("left-container")}>
           <div className={cx("logo")}>
-            <a href="/">
+            <a href={config.routes.home}>
               <img src={images.logo} alt="TikTok" />
             </a>
           </div>

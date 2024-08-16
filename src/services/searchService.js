@@ -1,4 +1,4 @@
-import * as request from "~/ultis/request";
+import * as request from "~/ultis/httpRequest";
 
 export const search = async (q, type = "less") => {
   try {

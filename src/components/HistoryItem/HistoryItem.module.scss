@@ -11,8 +11,7 @@
 }
 
 .history-content {
-  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
-    sans-serif;
+  font-family: var(--font-family);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.75);
   font-size: 16px;
