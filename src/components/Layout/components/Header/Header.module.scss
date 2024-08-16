@@ -1,0 +1,166 @@
+.wrapper {
+  justify-content: space-around;
+  box-shadow: rgba(255, 255, 255, 0.12) 0px 1px 1px;
+  height: 60px;
+  width: calc(100% + 0px);
+  top: 0px;
+  position: fixed;
+  -webkit-box-align: center;
+  align-items: center;
+  background: var(--darkcolor);
+  z-index: 3000;
+}
+
+.inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  max-width: 100%;
+  padding-right: 24px;
+  padding-left: 16px;
+}
+// Left
+.left-container {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  min-width: 300px;
+  margin-inline-start: unset;
+}
+
+.logo {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  min-width: 300px;
+  margin-inline-start: unset;
+  user-select: none;
+}
+
+.logo > a {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.center-container {
+  position: relative;
+  min-width: 200px;
+  padding: 0px 8px;
+  width: 516px;
+}
+
+// Right
+.right-container {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+  margin-inline-end: unset;
+}
+
+.imore-icon-wrapper {
+  color: var(--white-color);
+  margin-left: 16px;
+  position: relative;
+  font-style: normal;
+  display: block;
+}
+
+// Header User
+.message-container {
+  display: flex;
+  padding: 0px !important;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 1rem;
+  padding-inline-start: 1rem;
+
+  .message-icon {
+    margin-left: 14px;
+    cursor: pointer;
+    height: 32px;
+    padding: 3px;
+    position: relative;
+  }
+
+  .btn {
+    background-color: transparent !important;
+
+    span {
+      width: 26px;
+      height: 16px;
+
+      svg {
+        width: 26px;
+        height: 26px;
+        fill: var(--white-color);
+        transform: none;
+      }
+    }
+  }
+  .message-supbadge {
+    color: rgb(255, 255, 255);
+    font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+      sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    left: 15px;
+    position: absolute;
+    top: -10px;
+    min-width: 20px;
+    border-radius: 10px;
+    height: 20px;
+    background: rgb(255, 59, 92);
+    text-align: center;
+    padding: 0px;
+  }
+}
+
+.inbox-container {
+  margin-left: 16px;
+  position: relative;
+
+  .inbox-icon {
+    display: block;
+    fill: var(--white-color);
+  }
+
+  .inbox-supbadge {
+    color: rgb(255, 255, 255);
+    font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+      sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    left: 16px;
+    background: rgb(255, 59, 92);
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-radius: 10px;
+    position: absolute;
+    top: -20%;
+  }
+}
+
+.profile-container {
+  height: 32px;
+  img {
+    margin-left: 24px;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: center center / cover no-repeat;
+    border-radius: 50%;
+  }
+}

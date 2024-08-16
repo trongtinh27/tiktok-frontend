@@ -1,0 +1,37 @@
+.history-item {
+  padding: 9px 16px;
+  cursor: pointer;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.history-content {
+  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+    sans-serif;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 16px;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 12px;
+  padding-left: 8px;
+}
+
+.history-icon__clock,
+.history-icon__x {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.history-icon__x {
+  margin-left: auto;
+}

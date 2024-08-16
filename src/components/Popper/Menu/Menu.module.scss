@@ -1,0 +1,59 @@
+.setting-popup-list {
+  position: absolute;
+  z-index: 2;
+  right: -13px !important;
+  padding: 10px 0;
+  min-width: 305px;
+  height: auto;
+  background: rgb(13, 13, 13);
+  border-radius: 8px;
+  top: calc(100% + 2px);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+  transition: opacity 300ms;
+  background-color: rgb(37, 37, 37);
+  opacity: 1;
+}
+
+.setting-item {
+  width: 100% !important;
+  height: 42px;
+  margin-left: 0 !important;
+  justify-content: flex-start;
+  background-color: rgb(37, 37, 37) !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+}
+// Header
+.header {
+  position: relative;
+  height: 50px;
+  margin-top: -8px;
+}
+
+.back-btn {
+  width: 50px;
+  height: 100%;
+  background-color: transparent;
+  color: var(--white-color);
+  cursor: pointer;
+}
+
+.header-title {
+  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+    sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+  color: var(--white-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.logout {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}

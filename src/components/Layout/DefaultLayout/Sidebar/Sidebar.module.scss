@@ -1,0 +1,21 @@
+.wrapper {
+  position: relative;
+  height: 100%;
+  width: 240px;
+  flex: 0 0 240px;
+}
+
+.scroll-container {
+  overflow: hidden auto;
+  overscroll-behavior-y: contain;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  perspective-origin: right top;
+  top: 60px;
+  bottom: 0px;
+  width: 240px;
+  background: var(--darkcolor);
+  position: fixed;
+  z-index: 99;
+  padding-right: 8px;
+}

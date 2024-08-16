@@ -1,0 +1,115 @@
+// Center - search
+
+.search-container {
+  position: relative;
+}
+
+.search-box {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 0px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 92px;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  z-index: 1;
+  margin: 0px;
+
+  input {
+    font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+      sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    background: transparent;
+    padding: 12px 0px;
+    width: 100%;
+    color: var(--white-text);
+    caret-color: var(--primary);
+    appearance: textfield;
+  }
+
+  &:focus-within {
+    border-color: var(--white-text);
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.search-result {
+  position: relative;
+  top: -5px;
+  width: 100%;
+  background: rgb(37, 37, 37);
+  border-radius: 8px;
+  padding-top: 8px;
+  box-sizing: border-box;
+  max-height: min(-156px + 100vh, 760px);
+  overflow: hidden auto;
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+.search-result__header {
+  font-family: "IBM Plex Sans", TikTokFont, Arial, Tahoma, PingFangSC,
+    sans-serif;
+  width: 505px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 5px 12px 3px;
+}
+
+.search-btn {
+  padding: 11px 16px 11px 12px;
+  margin: -12px -16px -12px 0px;
+  font-size: 0px;
+  cursor: pointer;
+  background: transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.span-spliter {
+  width: 1px;
+  height: 28px;
+  margin: -3px 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.search-icon {
+  outline: none;
+  svg {
+    fill: rgba(255, 255, 255, 0.34);
+  }
+}
+
+.clear,
+.loading {
+  position: absolute;
+  font-size: 16px;
+  right: 68px;
+  color: rgba(255, 255, 255, 0.34);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.loading {
+  animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+  from {
+    transform: translateY(-50%) rotate(0);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

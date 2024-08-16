@@ -1,0 +1,105 @@
+@import "normalize.css";
+
+:root {
+  --primary: rgb(255, 59, 92);
+  --darkcolor: rgb(18, 18, 18);
+  --text-color: #333;
+  --white-color: rgb(255, 255, 255);
+  --white-text: rgba(255, 255, 255, 0.9);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "TikTokFont";
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+body {
+  .tippy-box {
+    text-align: left;
+    height: 37px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    background-color: rgba(84, 84, 84, 0.92);
+    color: rgb(255, 255, 255);
+    padding: 8px;
+  }
+
+  .tippy-content {
+    padding: 0 9px;
+  }
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+a[href] {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: TikTokFont;
+  src: url("/assets/fonts/TikTokFont-Regular.woff2");
+  font-size: 400;
+}
+
+@font-face {
+  font-family: TikTokFont;
+  src: url("/assets/fonts/TikTokFont-Semibold.woff2");
+  font-size: 600;
+}
+@font-face {
+  font-family: TikTokFont;
+  src: url("/assets/fonts/TikTokFont-Bold.woff2");
+  font-size: 700;
+}
+@font-face {
+  font-family: TikTokDisplayFont;
+  src: url("/assets/fonts/TikTokDisplayFont-Bold.woff2");
+  font-size: 700;
+}
+
+.videos::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(18, 18, 18);
+  border-radius: 40px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #000;
+}
