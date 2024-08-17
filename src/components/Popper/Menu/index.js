@@ -5,12 +5,18 @@ import MenuItem from "./MenuItem";
 import style from "./Menu.module.scss";
 import Header from "~/components/Popper/Menu/Header";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const cx = classNames.bind(style);
 
 const defaultFn = () => {};
 
-function Menu({ children, items = [], onChange = defaultFn() }) {
+function Menu({
+  children,
+  items = [],
+  hideOnClick = false,
+  onChange = defaultFn(),
+}) {
   const [historyMenu, setHistoryMenu] = useState([{ data: items }]);
   const currentMenu = historyMenu[historyMenu.length - 1];
 
@@ -36,7 +42,7 @@ function Menu({ children, items = [], onChange = defaultFn() }) {
   return (
     <Tippy
       interactive
-      hideOnClick={false}
+      hideOnClick={hideOnClick}
       delay={[0, 700]}
       placement="bottom-end"
       render={(attrs) => (
@@ -62,5 +68,12 @@ function Menu({ children, items = [], onChange = defaultFn() }) {
     </Tippy>
   );
 }
+
+Menu.propTypes = {
+  children: PropTypes.node.isRequired,
+  items: PropTypes.array,
+  onChange: PropTypes.func,
+  hideOnClick: PropTypes.bool,
+};
 
 export default Menu;

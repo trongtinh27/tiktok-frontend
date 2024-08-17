@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import style from "./HistoryItem.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faXmark } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
 
 const cx = classNames.bind(style);
 
@@ -20,5 +21,9 @@ function HistoryItem({ children }) {
     </li>
   );
 }
+
+HistoryItem.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default HistoryItem;

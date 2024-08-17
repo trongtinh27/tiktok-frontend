@@ -2,6 +2,7 @@ import images from "~/assets/images";
 import { useState } from "react";
 import classNames from "classnames";
 import styles from "./Image.module.scss";
+import PropTypes from "prop-types";
 
 function Image({
   src,
@@ -26,5 +27,12 @@ function Image({
     ></img>
   );
 }
+
+Image.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  className: PropTypes.string,
+  fallback: PropTypes.string,
+};
 
 export default Image;
