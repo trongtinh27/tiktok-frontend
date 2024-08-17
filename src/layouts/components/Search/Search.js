@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -16,8 +17,14 @@ const cx = classNames.bind(styles);
 function Search() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [showResult, setShowResult] = useState(true);
+  const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // search history
+  const [cookies, setCookie] = useCookies(["searchHistory"]);
+  const [searchHistory, setSearchHistory] = useState(
+    cookies.searchHistory ? cookies.searchHistory.split(",") : []
+  );
 
   const debounce = useDebounce(searchValue, 500);
 
@@ -28,7 +35,6 @@ function Search() {
       setSearchResult([]);
       return;
     }
-
     const fetchApi = async () => {
       setLoading(true);
 
@@ -39,6 +45,10 @@ function Search() {
     };
     fetchApi();
   }, [debounce]);
+
+  useEffect(() => {
+    setCookie("searchHistory", searchHistory.join(","), { path: "/" });
+  }, [searchHistory, setCookie]);
 
   const handleClear = () => {
     setSearchValue("");
@@ -57,20 +67,60 @@ function Search() {
     setShowResult(false);
   };
 
+  const handleAccountClick = (nickname) => {
+    let updatedHistory = [...searchHistory];
+    const index = updatedHistory.indexOf(nickname);
+
+    // Nếu nickname đã tồn tại, xóa nó khỏi vị trí cũ
+    if (index > -1) {
+      updatedHistory.splice(index, 1);
+    }
+
+    // Thêm nickname mới vào đầu queue
+    updatedHistory.unshift(nickname);
+
+    // Giới hạn kích thước của queue (ví dụ: 5 phần tử)
+    if (updatedHistory.length > 5) {
+      updatedHistory.pop(); // Loại bỏ phần tử cuối cùng trong queue
+    }
+
+    setSearchHistory(updatedHistory);
+
+    // Đóng menu và xóa kết quả tìm kiếm
+    setShowResult(false);
+    setSearchResult([]);
+  };
+
+  const handleRemoveHistory = (historyItem) => {
+    const updatedHistory = searchHistory.filter((item) => item !== historyItem);
+
+    setSearchHistory(updatedHistory);
+  };
+
   return (
     <HeadlessTippy
-      visible={showResult && searchResult.length > 0}
+      visible={showResult && (showResult || searchResult.length > 0)}
       interactive
       render={(attrs) => (
         <ul className={cx("search-result")} tabIndex="-1" {...attrs}>
-          <div className={cx("search-result__header")}>Tìm kiếm gần đây</div>
-          <HistoryItem> My tippy box</HistoryItem>
-          <HistoryItem> My tippy box</HistoryItem>
-          <HistoryItem> My tippy box</HistoryItem>
+          {searchHistory.length > 0 && (
+            <div className={cx("search-result__header")}>Tìm kiếm gần đây</div>
+          )}
+          {searchHistory.map((history) => (
+            <HistoryItem key={history} onRemove={handleRemoveHistory}>
+              {history}
+            </HistoryItem>
+          ))}
 
-          <div className={cx("search-result__header")}>Tài khoản</div>
+          {searchResult.length > 0 && (
+            <div className={cx("search-result__header")}>Tài khoản</div>
+          )}
           {searchResult.map((result) => (
-            <AccountItem key={result.id} data={result} />
+            <AccountItem
+              key={result.id}
+              data={result}
+              onClick={() => handleAccountClick(result.nickname)}
+            />
           ))}
         </ul>
       )}
@@ -94,10 +144,7 @@ function Search() {
               className={cx("clear-btn")}
               onClick={handleClear}
             >
-              <FontAwesomeIcon
-                className={cx("clear")}
-                icon={faCircleXmark}
-              ></FontAwesomeIcon>
+              <FontAwesomeIcon className={cx("clear")} icon={faCircleXmark} />
             </button>
           )
         }
@@ -105,10 +152,7 @@ function Search() {
         {
           /* loading */
           loading && (
-            <FontAwesomeIcon
-              className={cx("loading")}
-              icon={faSpinner}
-            ></FontAwesomeIcon>
+            <FontAwesomeIcon className={cx("loading")} icon={faSpinner} />
           )
         }
         <span className={cx("span-spliter")}></span>

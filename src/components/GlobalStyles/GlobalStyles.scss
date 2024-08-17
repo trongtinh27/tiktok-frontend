@@ -64,30 +64,31 @@ button,
   cursor: pointer;
 }
 
-a[href] {
+a {
+  color: var(--text-color);
   text-decoration: none;
 }
 
 @font-face {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Regular.woff2");
-  font-size: 400;
+  font-weight: 400;
 }
 
 @font-face {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Semibold.woff2");
-  font-size: 600;
+  font-weight: 600;
 }
 @font-face {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Bold.woff2");
-  font-size: 700;
+  font-weight: 700;
 }
 @font-face {
   font-family: TikTokDisplayFont;
   src: url("/assets/fonts/TikTokDisplayFont-Bold.woff2");
-  font-size: 700;
+  font-weight: 700;
 }
 
 .videos::-webkit-scrollbar {

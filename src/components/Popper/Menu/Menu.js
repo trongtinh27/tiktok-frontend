@@ -4,6 +4,7 @@ import { Wrapper as PopperWrapper } from "~/components/Popper";
 import MenuItem from "./MenuItem";
 import style from "./Menu.module.scss";
 import Header from "~/components/Popper/Menu/Header";
+import { TopArrow } from "~/components/Icons";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -39,30 +40,37 @@ function Menu({
     });
   };
 
+  const handleBack = () => {
+    setHistoryMenu((prev) => prev.slice(0, prev.length - 1));
+  };
+
+  const renderMenu = (attrs) => (
+    <>
+      <TopArrow className={cx("top-arrow")}></TopArrow>
+      <div className={cx("setting-popup-list")} tabIndex="-1" {...attrs}>
+        <PopperWrapper>
+          {historyMenu.length > 1 && (
+            <Header title={currentMenu.title} onBack={handleBack} />
+          )}
+          <div className={cx("body-menu")}>{renderItems()}</div>
+        </PopperWrapper>
+      </div>
+    </>
+  );
+
+  // Reset to first page menu
+  const handleResetMenu = () => {
+    setHistoryMenu((prev) => prev.slice(0, 1));
+  };
+
   return (
     <Tippy
       interactive
       hideOnClick={hideOnClick}
       delay={[0, 700]}
       placement="bottom-end"
-      render={(attrs) => (
-        <div className={cx("setting-popup-list")} tabIndex="-1" {...attrs}>
-          <PopperWrapper>
-            {historyMenu.length > 1 && (
-              <Header
-                title={currentMenu.title}
-                onBack={() => {
-                  setHistoryMenu((prev) => prev.slice(0, prev.length - 1));
-                }}
-              />
-            )}
-            <div className={cx("body-menu")}>{renderItems()}</div>
-          </PopperWrapper>
-        </div>
-      )}
-      onHide={() => {
-        setHistoryMenu((prev) => prev.slice(0, 1));
-      }}
+      render={renderMenu}
+      onHide={handleResetMenu}
     >
       {children}
     </Tippy>

@@ -61,3 +61,13 @@
 .logout {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
+
+.top-arrow {
+  color: rgb(37, 37, 37);
+  display: block;
+  width: 24px;
+  height: 8px;
+  position: absolute;
+  top: -6px;
+  right: 2px;
+}
