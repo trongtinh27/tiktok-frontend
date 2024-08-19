@@ -1,0 +1,77 @@
+.wrapper {
+  position: relative;
+  height: 100%;
+  width: 240px;
+  flex: 0 0 240px;
+}
+
+.scroll-container {
+  overflow: hidden auto;
+  overscroll-behavior-y: contain;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  perspective-origin: right top;
+  top: 60px;
+  bottom: 0px;
+  width: 240px;
+  background: var(--darkcolor);
+  position: fixed;
+  z-index: 99;
+}
+.sidebar-container {
+  padding: 20px 0px 26px 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+  min-height: 100%;
+}
+
+.menu-container {
+  margin-bottom: 8px;
+  padding: 0px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  padding: 4px;
+  display: flex;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.login-container {
+  position: relative;
+  padding: 20px 8px 24px;
+  margin: 0px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 1px;
+    left: 8px;
+    right: 8px;
+    background: rgba(22, 24, 35, 0.12);
+    transform: scaleY(0.5);
+    top: 0px;
+  }
+}
+
+.login-hint {
+  color: var(--white-opacity-50);
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.btn-login {
+  margin: 0;
+  margin-top: 20px;
+  width: 100%;
+}

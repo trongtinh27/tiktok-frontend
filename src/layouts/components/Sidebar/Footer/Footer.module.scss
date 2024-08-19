@@ -1,0 +1,104 @@
+.footer-container {
+  position: relative;
+  padding-top: 16px;
+  padding-left: 8px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 0;
+    height: 1px;
+    background: var(--white-opacity-12);
+    transform: scaleY(0.5);
+  }
+}
+
+.effecthousetrance-container {
+  height: 50px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 30px;
+  padding-right: 8px;
+}
+
+.eht-link {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.effecthousetrance-content {
+  position: relative;
+  box-sizing: border-box;
+  width: 208px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.effecthousetrance-image {
+  height: 52px;
+  border-radius: 8px;
+  display: block;
+  user-select: none;
+}
+
+.effecthousetrance-title-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  left: 50px;
+  text-align: start;
+  width: 141px;
+}
+
+.effecthousetrance-title {
+  max-height: 40px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.title {
+  color: var(--light-warm-yellow);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  margin: 0px;
+}
+
+.more-container {
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.more,
+.copyright {
+  color: var(--white-opacity-50);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: 5px;
+}
+
+// FooterItem
+.linklist-header {
+  font-size: 15px;
+  line-height: 22px;
+  margin-top: 15px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: TikTokDisplayFont;
+  font-weight: 700;
+}

@@ -1,0 +1,35 @@
+.nav {
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.menu-item {
+  position: relative;
+  display: flex;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 32px;
+  transition: background 200ms ease-in-out;
+
+  &.active > .title {
+    color: var(--primary);
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.title {
+  color: var(--white-text);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  margin-left: 8px;
+  //   margin-bottom: 0px;
+}

@@ -1,0 +1,142 @@
+.user-container {
+  padding: 16px 0px;
+  color: var(--white-opacity-75);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 0;
+    height: 1px;
+    background: var(--white-opacity-12);
+    transform: scaleY(0.5);
+  }
+}
+
+.title {
+  padding: 0 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.account-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.user-link-container {
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+  border-radius: 4px;
+  transition: background 200ms ease-in-out;
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.style-user-avatar {
+  position: relative;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-feature-settings: "tnum";
+  overflow: hidden;
+  color: var(--white-color);
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 32px;
+  border-radius: 50%;
+  border-color: var(--white-opacity-12);
+  border-width: 0.5px;
+  background-color: var(--gray-opacity-50);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-content-link {
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  height: 32px;
+}
+
+.user-title-container {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.user-title {
+  color: var(--white-opacity-90);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 21px;
+  margin-top: -2px;
+  max-width: 145px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.verify-badge {
+  svg {
+    margin-left: 4px;
+    width: 14px !important;
+    height: 14px !important;
+  }
+}
+
+.user-fullname {
+  color: var(--white-opacity-75);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  max-width: 145px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn-show-more {
+  background: transparent;
+  border: none;
+  padding: 0px 8px;
+  margin-top: 8px;
+
+  .text-show-more {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

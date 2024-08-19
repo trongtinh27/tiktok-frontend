@@ -1,17 +1,18 @@
 import classNames from "classnames/bind";
 import style from "./Default.module.scss";
 import Header from "~/layouts/components/Header";
-import SideBar from "./Sidebar";
+import SideBar from "~/layouts/components/Sidebar";
 import PropTypes from "prop-types";
 
 const cx = classNames.bind(style);
 
 function DefaultLayout({ children }) {
+  const currentUser = false;
   return (
     <div className={cx("wrapper")}>
-      <Header />
+      <Header currentUser={currentUser} />
       <div className={cx("container")}>
-        <SideBar />
+        <SideBar currentUser={currentUser} />
         <div className={cx("content")}>{children}</div>
       </div>
     </div>

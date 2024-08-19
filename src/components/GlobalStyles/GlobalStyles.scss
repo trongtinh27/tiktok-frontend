@@ -6,6 +6,13 @@
   --text-color: #333;
   --white-color: rgb(255, 255, 255);
   --white-text: rgba(255, 255, 255, 0.9);
+  --white-opacity-12: rgba(255, 255, 255, 0.12);
+  --white-opacity-50: rgba(255, 255, 255, 0.5);
+  --white-opacity-75: rgba(255, 255, 255, 0.75);
+  --white-opacity-90: rgba(255, 255, 255, 0.9);
+  --gray-opacity-50: rgba(136, 136, 136, 0.5);
+
+  --light-warm-yellow: rgb(255, 245, 201);
 
   --font-family: TikTokFont, Arial, Tahoma, sans-serif;
 }
@@ -73,22 +80,26 @@ a {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Regular.woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Semibold.woff2");
   font-weight: 600;
+  font-display: swap;
 }
 @font-face {
   font-family: TikTokFont;
   src: url("/assets/fonts/TikTokFont-Bold.woff2");
   font-weight: 700;
+  font-display: swap;
 }
 @font-face {
   font-family: TikTokDisplayFont;
   src: url("/assets/fonts/TikTokDisplayFont-Bold.woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 .videos::-webkit-scrollbar {

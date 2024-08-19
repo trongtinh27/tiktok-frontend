@@ -89,8 +89,8 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header() {
-  const currentUser = true;
+function Header({ currentUser }) {
+  const useStatus = currentUser;
 
   const handleChangeItemMenu = (menuItem) => {
     console.log(menuItem);
@@ -131,7 +131,7 @@ function Header() {
           </div>
         </div>
         <div className={cx("right-container")}>
-          {currentUser ? (
+          {useStatus ? (
             <>
               <Button upload medium leftIcon={<PlusIcon />}>
                 <span>Tải lên</span>
