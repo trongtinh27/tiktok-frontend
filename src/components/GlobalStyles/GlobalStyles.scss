@@ -2,15 +2,22 @@
 
 :root {
   --primary: rgb(255, 59, 92);
+  --primary-opacity-1: rgba(255, 59, 92, 1);
   --darkcolor: rgb(18, 18, 18);
+  --dark-gray: rgba(37, 37, 37, 1);
   --text-color: #333;
   --white-color: rgb(255, 255, 255);
   --white-text: rgba(255, 255, 255, 0.9);
+  --subtle-white: rgba(255, 255, 255, 0.08);
   --white-opacity-12: rgba(255, 255, 255, 0.12);
   --white-opacity-50: rgba(255, 255, 255, 0.5);
   --white-opacity-75: rgba(255, 255, 255, 0.75);
   --white-opacity-90: rgba(255, 255, 255, 0.9);
+  --white-opacity-1: rgba(255, 255, 255, 1);
+
   --gray-opacity-50: rgba(136, 136, 136, 0.5);
+
+  --black-opacity-1: rgba(0, 0, 0, 1);
 
   --light-warm-yellow: rgb(255, 245, 201);
 
@@ -59,6 +66,12 @@ body {
   }
 }
 
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
 button,
 input,
 [tabindex] {
@@ -69,6 +82,31 @@ input,
 button,
 [role="button"] {
   cursor: pointer;
+}
+
+[shape="circle"] {
+  box-shadow: rgba(255, 255, 255, 0.12) 0px 0px 1px 1px;
+}
+
+[shape="square"] {
+  width: 100%;
+}
+
+[shape="vertical"] {
+  max-width: 692px;
+}
+
+[shape="horizontal"] {
+  height: unset;
+  width: 100%;
+}
+
+canvas[shape="square"] {
+  width: 100px;
+}
+
+canvas[shape="horizontal"] {
+  width: 177px;
 }
 
 a {
