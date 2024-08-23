@@ -22,7 +22,7 @@ import images from "~/assets/images";
 import Button from "~/components/Button";
 import Image from "~/components/Image";
 import Search from "../Search";
-// import { Wrapper as PopperWrapper } from "~/components/Popper";
+import { useAuth } from "~/components/AuthModal";
 
 import Menu from "~/components/Popper/Menu";
 import { MessageIcon, InboxIcon, PlusIcon, MoreIcon } from "~/components/Icons";
@@ -91,6 +91,12 @@ const MENU_ITEMS = [
 
 function Header({ currentUser }) {
   const useStatus = currentUser;
+
+  const { setIsOpenLogin } = useAuth();
+
+  const handleLoginClick = () => {
+    setIsOpenLogin(true); // Mở modal đăng nhập
+  };
 
   const handleChangeItemMenu = (menuItem) => {
     console.log(menuItem);
@@ -167,7 +173,7 @@ function Header({ currentUser }) {
             </>
           ) : (
             <>
-              <Button primary medium>
+              <Button primary medium onClick={handleLoginClick}>
                 Đăng nhập
               </Button>
               <Menu items={MENU_ITEMS} onChange={handleChangeItemMenu}>

@@ -47,6 +47,20 @@
   height: 100%;
 }
 
+.horizontal {
+  height: unset;
+}
+
+.square {
+  display: block;
+  width: 100%;
+  // margin: unset;
+  margin: unset;
+
+  // height: 100%;
+  object-fit: contain;
+}
+
 .video-player-container {
   position: absolute;
   left: 0px;

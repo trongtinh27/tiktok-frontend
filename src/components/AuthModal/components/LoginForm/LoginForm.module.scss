@@ -1,0 +1,208 @@
+.title {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: TikTokDisplayFont;
+  font-size: 32px;
+  margin: 16px auto;
+  font-weight: bold;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+.description {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.des-link {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;
+  position: relative;
+  top: 3px;
+
+  &:hover {
+    text-decoration: underline rgba(255, 255, 255, 0.75);
+  }
+}
+
+.container {
+  margin-bottom: 9px;
+}
+
+.phone-input-container {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0);
+  transition: 0.3s;
+  border-radius: 4px;
+  display: flex;
+}
+
+.country-code {
+  position: relative;
+  cursor: pointer;
+}
+
+.area-selector {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  position: relative;
+  padding: 12px;
+  height: 44px;
+  &::after {
+    content: "";
+    width: 1px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.12);
+    right: 0px;
+    left: unset;
+    position: absolute;
+  }
+}
+
+.country-code-lable {
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.9);
+  margin-inline-end: 12px;
+}
+
+.arrow-icon {
+  fill: #fff;
+}
+
+.input-container {
+  position: relative;
+  flex: 1 1 0%;
+  width: 0px;
+  margin-bottom: 0px;
+}
+
+.phone-input {
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: none rgba(255, 255, 255, 0);
+  padding-inline-start: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 100%;
+  outline: none;
+  font-size: 16px;
+  height: 44px;
+  caret-color: rgb(255, 59, 92);
+  width: 100%;
+  padding-inline-end: unset;
+  background: transparent !important;
+}
+
+.password-input-container {
+  position: relative;
+  margin-bottom: 9px;
+}
+
+.emailid-input-container {
+  position: relative;
+}
+
+.password-input,
+.emailid-input {
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0);
+  padding-inline: 12px 24px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 100%;
+  outline: none;
+  font-size: 16px;
+  height: 44px;
+  caret-color: rgb(255, 59, 92);
+  width: 100%;
+}
+
+.warning {
+  border: 1px solid rgb(255, 76, 58) !important;
+  color: rgb(255, 76, 58) !important;
+}
+
+.alert-error {
+  font-size: 12px;
+  line-height: 15px;
+  margin: 4px 0px;
+  color: rgb(255, 76, 58);
+  display: flex;
+}
+
+.password-icon {
+  right: 0px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  position: absolute;
+  top: 0px;
+  height: 44px;
+  padding-inline-end: 16px;
+
+  i {
+    line-height: 0;
+    margin-inline-start: 16px;
+    font-size: 20px;
+    opacity: 0.5;
+  }
+  svg {
+    fill: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.link-container {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-top: 9px;
+}
+
+.forget-password {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline rgba(255, 255, 255, 0.75);
+  }
+}
+
+.btn-login {
+  min-width: 120px;
+  min-height: 46px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  width: 100%;
+  margin-top: 21px;
+}
+
+.warning-icon {
+  width: 14px;
+  height: 14px;
+  fill: rgb(254, 44, 85) !important;
+}
+
+// Signup form
+
+.date-selector-container {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.description-date {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 16px;
+}

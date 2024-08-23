@@ -1,9 +1,9 @@
 import Header from "~/layouts/components/Header";
 
-function HeaderOnly({ children }) {
+function HeaderOnly({ children, currentUser }) {
   return (
     <div>
-      <Header />
+      <Header currentUser={currentUser} />
       <div className="container">
         <div className="contnet">{children}</div>
       </div>

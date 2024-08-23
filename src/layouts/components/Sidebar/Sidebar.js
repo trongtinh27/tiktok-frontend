@@ -24,6 +24,8 @@ import {
   LiveIconActive,
   UploadIcon,
 } from "~/components/Icons";
+import { useAuth } from "~/components/AuthModal";
+
 import config from "~/config";
 
 const cx = classNames.bind(styles);
@@ -121,6 +123,12 @@ const anonymousUsers = [
 function SideBar({ currentUser }) {
   const userStatus = currentUser;
 
+  const { setIsOpenLogin } = useAuth();
+
+  const handleLoginClick = () => {
+    setIsOpenLogin(true); // Mở modal đăng nhập
+  };
+
   return (
     <div className={cx("wrapper")}>
       <aside className={cx("scroll-container")}>
@@ -152,7 +160,12 @@ function SideBar({ currentUser }) {
                 <p className={cx("login-hint")}>
                   Đăng nhập để follow các tác giả, thích video và xem bình luận.
                 </p>
-                <Button outline large className={cx("btn-login")}>
+                <Button
+                  outline
+                  large
+                  className={cx("btn-login")}
+                  onClick={handleLoginClick}
+                >
                   Đăng nhập
                 </Button>
               </div>

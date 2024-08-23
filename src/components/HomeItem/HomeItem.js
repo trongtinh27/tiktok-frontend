@@ -6,7 +6,6 @@ import "tippy.js/dist/tippy.css";
 import { Link } from "react-router-dom";
 
 import Image from "~/components/Image";
-import images from "~/assets/images";
 import {
   MuteIcon,
   UnMuteIcon,
@@ -19,7 +18,7 @@ import ActionItem from "./ActionItem";
 
 const cx = classNames.bind(styles);
 
-function HomeItem({ shape, videoData }) {
+function HomeItem({ shape, video }) {
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
   const containerRef = useRef(null);
@@ -145,8 +144,8 @@ function HomeItem({ shape, videoData }) {
   }, [volumeValue]);
 
   return (
-    <div ref={containerRef} className={cx("list-item-container")}>
-      <div shape={shape} className={cx("content-container")}>
+    <div ref={containerRef} shape={shape} className={cx("list-item-container")}>
+      <div className={cx("content-container")}>
         <div shape={shape} className={cx("media")}>
           <div
             shape={shape}
@@ -157,9 +156,11 @@ function HomeItem({ shape, videoData }) {
             <canvas
               shape={shape}
               ref={canvasRef}
-              width={56.25}
+              width={
+                shape === "horizontal" ? 150 : shape === "vertical" ? 56 : 100
+              }
               height={100}
-              className={cx("canvas-media")}
+              className={cx("canvas-media", shape)}
             ></canvas>
             <div className={cx("video-player-container")}>
               <div className={cx("video-player")}>
@@ -167,7 +168,8 @@ function HomeItem({ shape, videoData }) {
                   <span>
                     <picture>
                       <Image
-                        src="https://p16-sign-useast2a.tiktokcdn.com/obj/tos-useast2a-p-0037-euttp/a8a3581534e64ef08f18c88b7ec5d0c7_1723728189?lk3s=b59d6b55&x-expires=1724288400&x-signature=l2w00qfmQDD4Zg%2Fr8dAGZSyT%2F04%3D"
+                        src={video.thumbnailUrl}
+                        fallback="https://via.placeholder.com/56x100"
                         className={cx("image-thumnail")}
                       />
                     </picture>
@@ -182,7 +184,7 @@ function HomeItem({ shape, videoData }) {
                       playsInline
                       preload="auto"
                       muted={!isFirstVideo && isMute}
-                      src={images.videoTest}
+                      src={video.videoUrl}
                     />
                   </div>
                 </div>
@@ -256,7 +258,10 @@ function HomeItem({ shape, videoData }) {
               <div className={cx("media-card-bottom")}>
                 <div className={cx("author-container-wrapper")}>
                   <div className={cx("author-container")}>
-                    <Link to="/@tinhsubo" className={cx("author-link")}>
+                    <Link
+                      to={`/@${video.username}`}
+                      className={cx("author-link")}
+                    >
                       <h3 className={cx("author-title")}>tinhsubo</h3>
                     </Link>
                   </div>
@@ -266,7 +271,7 @@ function HomeItem({ shape, videoData }) {
                     <div className={cx("multiline-text")}>
                       <div className={cx("multiline-text-content")}>
                         <span className={cx("text-content")}>
-                          Tại sao có 2 New York và 2 Washington?
+                          {video.decription}
                         </span>
                       </div>
                     </div>
@@ -293,7 +298,7 @@ function HomeItem({ shape, videoData }) {
               </div>
             </div>
           </div>
-          <ActionItem />
+          <ActionItem video={video} />
         </div>
       </div>
     </div>
