@@ -74,7 +74,7 @@ const selectorStyles = {
 
     "&:hover": { color: "rgba(255, 255, 255, 0.9)" },
   }),
-  indicatorSeparator: (styles) => ({
+  indicatorSeparator: () => ({
     display: "none", // Ẩn đường phân cách
   }),
   input: (styles) => ({
@@ -92,7 +92,7 @@ const selectorStyles = {
 
     transition: " display 0.3s",
   }),
-  option: (styles, { isSelected, isFocused }) => ({
+  option: (styles) => ({
     ...styles,
     height: "34px",
     overflow: "auto",
@@ -106,7 +106,7 @@ const selectorStyles = {
     "&:hover, &:focus": { background: "rgba(255, 255, 255, 0.04)" },
   }),
   placeholder: (styles) => ({ ...styles }),
-  singleValue: (styles, { data }) => ({
+  singleValue: (styles) => ({
     ...styles,
     color: "rgba(255, 255, 255, 0.9)",
   }),
@@ -149,6 +149,7 @@ function SignUpForm() {
     setError(false);
     setErrorMessage("");
     setIsDisable(true);
+    setIsLoading(false);
     setInputPhone("");
     setInputEmail("");
     setSignpWithEmail((prev) => !prev);
@@ -173,6 +174,7 @@ function SignUpForm() {
     selectedDay,
     selectedMonth,
     selectedYear,
+    signupWithEmail,
   ]);
 
   return (

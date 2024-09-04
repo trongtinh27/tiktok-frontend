@@ -1,5 +1,9 @@
 import classNames from "classnames/bind";
+import { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
+import * as authService from "~/services/authService";
 import {
   ArrowIcon,
   OpenEyeIcon,
@@ -8,8 +12,6 @@ import {
 } from "~/components/Icons";
 import Button from "~/components/Button";
 import styles from "./LoginForm.module.scss";
-import { Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +29,8 @@ function LoginForm() {
   const [inputPhone, setInputPhone] = useState("");
   const [inputEmailOrID, setInputEmailOrID] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  // Cookies
+  const [setCookie] = useCookies(["token"]);
 
   const toggleLoginMethod = useCallback(() => {
     setError(false);
@@ -45,17 +49,51 @@ function LoginForm() {
     setter(e.target.value);
   };
 
+  const handleLogin = async () => {
+    setIsLoading(true);
+    setIsDisable(true);
+    let dataLogin = null;
+
+    try {
+      if (loginWithEmail) {
+        const res = await authService.loginApi(inputEmailOrID, inputPassword);
+        dataLogin = res.data;
+      } else {
+        const res = await authService.loginApi(inputPhone, inputPassword);
+        dataLogin = res.data;
+      }
+
+      if (dataLogin != null) {
+        console.log("token: " + dataLogin);
+        setCookie("token", dataLogin.token, {
+          path: "/",
+          maxAge: dataLogin.tokenExpiration / 1000,
+        });
+      }
+    } catch (error) {
+      setError(true);
+      setErrorMessage(error.response?.data?.message);
+    } finally {
+      setIsLoading(false);
+      setIsDisable(false);
+    }
+  };
+
   useEffect(() => {
     const isEmailLoginValid =
-      inputEmailOrID.length > 1 && inputPassword.length >= 8;
+      inputEmailOrID.length > 1 && inputPassword.length >= 5;
     const isPhoneLoginValid =
-      inputPhone.length === 10 && inputPassword.length >= 8;
+      inputPhone.length === 10 && inputPassword.length >= 5;
 
     setIsDisable(!(loginWithEmail ? isEmailLoginValid : isPhoneLoginValid));
   }, [inputEmailOrID, inputPhone, inputPassword, loginWithEmail]);
 
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <h2 className={cx("title")}>Đăng nhập</h2>
       <div className={cx("description")}>
         {loginWithEmail ? "Email hoặc TikTok ID" : "Điện thoại"}
@@ -108,7 +146,7 @@ function LoginForm() {
             type={showPassword ? "text" : "password"}
             placeholder="Mật khẩu"
             autoComplete="new-password"
-            minLength={8}
+            minLength={5}
             onChange={handleChangeInput(setInputPassword)}
           />
           <div className={cx("password-icon")}>
@@ -133,6 +171,7 @@ function LoginForm() {
         loading={isLoading}
         disabled={isDisable}
         primary
+        onClick={handleLogin}
         className={cx("btn-login")}
       >
         Đăng nhập

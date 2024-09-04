@@ -1,12 +1,14 @@
 import classNames from "classnames/bind";
 import Tippy from "@tippyjs/react/headless";
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { useCookies } from "react-cookie";
+
 import { Wrapper as PopperWrapper } from "~/components/Popper";
 import MenuItem from "./MenuItem";
 import style from "./Menu.module.scss";
 import Header from "~/components/Popper/Menu/Header";
 import { TopArrow } from "~/components/Icons";
-import { useState } from "react";
-import PropTypes from "prop-types";
 
 const cx = classNames.bind(style);
 
@@ -21,6 +23,12 @@ function Menu({
   const [historyMenu, setHistoryMenu] = useState([{ data: items }]);
   const currentMenu = historyMenu[historyMenu.length - 1];
 
+  const [removeCookie] = useCookies(["token"]);
+
+  const handleLogOut = () => {
+    removeCookie(["token"]);
+  };
+
   const renderItems = () => {
     return currentMenu.data.map((item, index) => {
       const isParent = !!item.children;
@@ -33,6 +41,9 @@ function Menu({
               setHistoryMenu((prev) => [...prev, item.children]);
             } else {
               onChange(item);
+            }
+            if (item.logout) {
+              handleLogOut();
             }
           }}
         />

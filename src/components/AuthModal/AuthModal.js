@@ -8,8 +8,8 @@ import styles from "./AuthModal.module.scss";
 import { useAuth } from "../AuthModal";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import LoginForm from "./components/LoginForm";
-import SignUpForm from "./components/LoginForm/SignUpForm";
+import LoginForm from "./components/form";
+import SignUpForm from "./components/form/SignUpForm";
 
 const cx = classNames.bind(styles);
 
@@ -55,31 +55,28 @@ function AuthModal() {
       <div className={cx("content")}>
         <div className={cx("auth-modal")}>
           <div className={cx("container")}>
-            {stateAuth === "loginform" || stateAuth === "signupform" ? (
-              <>
-                <div
-                  role="button"
-                  className={cx("back-btn")}
-                  onClick={handleBack}
-                >
-                  <BackIcon />
-                </div>
-              </>
-            ) : (
-              ""
-            )}
+            {stateAuth === "loginform" ||
+              (stateAuth === "signupform" && (
+                <>
+                  <div
+                    role="button"
+                    className={cx("back-btn")}
+                    onClick={handleBack}
+                  >
+                    <BackIcon />
+                  </div>
+                </>
+              ))}
             <div className={cx("content")}>
               <div className={cx("login-container")}>
                 <div className={cx("home-container ")}>
-                  {stateAuth === "login" || stateAuth === "signup" ? (
-                    isLogin ? (
-                      <Login setStateAuth={setStateAuth} />
-                    ) : (
-                      <Signup setStateAuth={setStateAuth} />
-                    )
-                  ) : (
-                    ""
-                  )}
+                  {stateAuth === "login" ||
+                    (stateAuth === "signup" &&
+                      (isLogin ? (
+                        <Login setStateAuth={setStateAuth} />
+                      ) : (
+                        <Signup setStateAuth={setStateAuth} />
+                      )))}
                   {stateAuth === "loginform" && <LoginForm />}
                   {stateAuth === "signupform" && <SignUpForm />}
                   {(stateAuth === "login" || stateAuth === "signup") && (

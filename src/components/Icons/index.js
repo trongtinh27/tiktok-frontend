@@ -642,6 +642,28 @@ export const CheckIcon = forwardRef(
   }
 );
 
+export const CheckBoldIcon = forwardRef(
+  ({ width = "16px", height = "16px", className, ...props }, ref) => {
+    return (
+      <svg
+        fill="currentColor"
+        viewBox="0 0 16 12"
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M13.9637 0.370662C14.1617 0.168152 14.4882 0.170371 14.6834 0.375552L15.6676 1.40986C15.8531 1.60483 15.851 1.91164 15.6629 2.10407L6.33538 11.644C5.86141 12.1288 5.09629 12.1169 4.6365 11.6177L0.326723 6.93829C0.144403 6.74033 0.151478 6.43358 0.342731 6.24424L1.35546 5.24162C1.55673 5.04237 1.88315 5.0499 2.07502 5.25822L5.5238 9.0028L13.9637 0.370662Z"
+        ></path>
+      </svg>
+    );
+  }
+);
+
 export const HeartIcon = forwardRef(
   ({ width = "24px", height = "24px", className, ...props }, ref) => {
     return (
@@ -1351,6 +1373,128 @@ export const BackIcon = forwardRef(
           clipRule="evenodd"
           d="M4.58579 22.5858L20.8787 6.29289C21.2692 5.90237 21.9024 5.90237 22.2929 6.29289L23.7071 7.70711C24.0976 8.09763 24.0976 8.7308 23.7071 9.12132L8.82843 24L23.7071 38.8787C24.0976 39.2692 24.0976 39.9024 23.7071 40.2929L22.2929 41.7071C21.9024 42.0976 21.2692 42.0976 20.8787 41.7071L4.58579 25.4142C3.80474 24.6332 3.80474 23.3668 4.58579 22.5858Z"
         ></path>
+      </svg>
+    );
+  }
+);
+
+export const EditIcon = forwardRef(
+  ({ width = "20px", height = "20px", className, ...props }, ref) => {
+    return (
+      <svg
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+        data-e2e=""
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill="currentColor"
+          fillRule="evenodd"
+          d="M15.393 2.226a.84.84 0 0 0-1.17.02L8.142 8.33a.84.84 0 0 0-.247.595v2.34c0 .464.377.841.842.841h2.183a.84.84 0 0 0 .596-.246l6.237-6.238a.843.843 0 0 0-.02-1.211zM9.58 9.273l5.26-5.26 1.107 1.033-5.374 5.375H9.58zM9.58 2a.42.42 0 0 1 .42.421v.842a.42.42 0 0 1-.42.421H4.526a.84.84 0 0 0-.842.842v10.948c0 .465.377.842.842.842h10.947a.84.84 0 0 0 .842-.842V10.42c0-.232.189-.421.421-.421h.842c.233 0 .422.188.422.421v5.053A2.526 2.526 0 0 1 15.473 18H4.526A2.526 2.526 0 0 1 2 15.474V4.526A2.526 2.526 0 0 1 4.526 2z"
+          clipRule="evenodd"
+        ></path>
+      </svg>
+    );
+  }
+);
+
+export const FollowCheckIcon = forwardRef(
+  ({ width = "20px", height = "20px", className, ...props }, ref) => {
+    return (
+      <svg
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+        data-e2e=""
+        viewBox="0 0 48 48"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M13.0001 13C13.0001 9.68629 15.6864 7 19.0001 7C22.3139 7 25.0001 9.68629 25.0001 13C25.0001 16.3137 22.3139 19 19.0001 19C15.6864 19 13.0001 16.3137 13.0001 13ZM19.0001 3C13.4773 3 9.00015 7.47715 9.00015 13C9.00015 18.5228 13.4773 23 19.0001 23C24.523 23 29.0001 18.5228 29.0001 13C29.0001 7.47715 24.523 3 19.0001 3ZM5.19435 40.9681C6.70152 35.5144 10.0886 32.2352 13.9162 30.738C17.7125 29.2531 22.0358 29.4832 25.6064 31.2486C26.1015 31.4934 26.7131 31.338 26.9931 30.8619L28.0072 29.1381C28.2872 28.662 28.1294 28.0465 27.6384 27.7937C23.0156 25.4139 17.4034 25.0789 12.4591 27.0129C7.37426 29.0018 3.09339 33.3505 1.2883 40.0887C1.14539 40.6222 1.48573 41.1592 2.02454 41.2805L3.97575 41.7195C4.51457 41.8408 5.04724 41.5004 5.19435 40.9681ZM44.7074 30.1212C45.0979 29.7307 45.0979 29.0975 44.7074 28.707L43.2932 27.2928C42.9026 26.9023 42.2695 26.9023 41.8789 27.2928L30.0003 39.1715L25.1216 34.2928C24.7311 33.9023 24.0979 33.9023 23.7074 34.2928L22.2932 35.707C21.9026 36.0975 21.9026 36.7307 22.2932 37.1212L28.586 43.4141C29.3671 44.1952 30.6334 44.1952 31.4145 43.4141L44.7074 30.1212Z"
+        ></path>
+      </svg>
+    );
+  }
+);
+
+export const BlockIcon = forwardRef(
+  ({ width = "20px", height = "20px", className, ...props }, ref) => {
+    return (
+      <svg
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+        data-e2e=""
+        viewBox="0 0 48 48"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M24 3C17.9249 3 13 7.92487 13 14V21H8C6.89543 21 6 21.8954 6 23V41C6 42.1046 6.89543 43 8 43H40C41.1046 43 42 42.1046 42 41V23C42 21.8954 41.1046 21 40 21H35V14C35 7.92487 30.0751 3 24 3ZM31 21V14C31 10.134 27.866 7 24 7C20.134 7 17 10.134 17 14V21H31Z"
+        ></path>
+      </svg>
+    );
+  }
+);
+
+export const PlayIcon = forwardRef(
+  ({ width = "18px", height = "18px", className, ...props }, ref) => {
+    return (
+      <svg
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+        data-e2e=""
+        viewBox="0 0 48 48"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M16 10.554V37.4459L38.1463 24L16 10.554ZM12 8.77702C12 6.43812 14.5577 4.99881 16.5569 6.21266L41.6301 21.4356C43.5542 22.6038 43.5542 25.3962 41.6301 26.5644L16.5569 41.7873C14.5577 43.0012 12 41.5619 12 39.223V8.77702Z"
+        ></path>
+      </svg>
+    );
+  }
+);
+
+export const PenIcon = forwardRef(
+  ({ width = "16px", height = "16px", className, ...props }, ref) => {
+    return (
+      <svg
+        className={className}
+        width={width}
+        height={height}
+        ref={ref}
+        {...props}
+        data-e2e=""
+        viewBox="0 0 48 48"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M26.5858 5.08579C27.3479 4.32371 28.5767 4.30253 29.3646 5.03789L36.8646 12.0379C37.2612 12.408 37.4904 12.9232 37.4997 13.4655C37.5091 14.0078 37.2977 14.5307 36.9142 14.9142L16.9142 34.9142C16.5391 35.2893 16.0304 35.5 15.5 35.5H8.5C7.39543 35.5 6.5 34.6046 6.5 33.5V26C6.5 25.4696 6.71071 24.9609 7.08579 24.5858L26.5858 5.08579ZM28.0479 9.2805L10.5 26.8284V31.5H14.6716L32.622 13.5496L28.0479 9.2805Z"
+        ></path>
+        <path d="M7 41C7 40.4477 7.44772 40 8 40H41C41.5523 40 42 40.4477 42 41V43C42 43.5523 41.5523 44 41 44H8C7.44772 44 7 43.5523 7 43V41Z"></path>
       </svg>
     );
   }

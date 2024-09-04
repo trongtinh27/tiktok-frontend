@@ -5,7 +5,7 @@ export const getAllVideo = async () => {
     const res = await request.get(`video/all`, {});
     // console.log("data: " + res);
 
-    return res;
+    return res.data;
   } catch (error) {
     console.error(error);
   }

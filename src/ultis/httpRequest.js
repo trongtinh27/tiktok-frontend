@@ -6,8 +6,24 @@ const httpRequest = axios.create({
 });
 
 export const get = async (path, options = {}) => {
-  const response = await httpRequest.get(path, options);
-  return response.data;
+  try {
+    const response = await httpRequest.get(path, options);
+    return response;
+  } catch (error) {
+    // Ném lỗi để có thể xử lý ở các phần khác
+    throw error;
+  }
+};
+
+export const post = async (path, options = {}) => {
+  try {
+    const response = await httpRequest.post(path, options);
+
+    return response;
+  } catch (error) {
+    // Ném lỗi để có thể xử lý ở các phần khác
+    throw error;
+  }
 };
 
 export default httpRequest;

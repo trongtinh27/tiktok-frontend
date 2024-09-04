@@ -19,9 +19,9 @@ import ActionItem from "./ActionItem";
 const cx = classNames.bind(styles);
 
 function HomeItem({ shape, video }) {
+  const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
-  const containerRef = useRef(null);
   const [isFirstVideo, setIsFirstVideo] = useState(true); // Trạng thái để theo dõi video đầu tiên
 
   // Volume

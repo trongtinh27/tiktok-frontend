@@ -1,11 +1,37 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import * as authService from "~/services/authService";
 import { publicRoutes } from "~/routes";
 import { DefaultLayout } from "~/layouts";
 import AuthModal, { AuthProvider } from "~/components/AuthModal";
 
 function App() {
-  const currentUser = false;
+  const [cookies] = useCookies(["token"]);
+  const [user, setUser] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const token = cookies.token;
+
+  useEffect(() => {
+    if (token) {
+      const loadProfile = async () => {
+        try {
+          const userInfo = await authService.profileApi(token);
+          setUser(userInfo.data);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error("Error loading profile:", error);
+          setIsLoggedIn(false);
+        }
+      };
+
+      loadProfile();
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [token]);
 
   return (
     <AuthProvider>
@@ -26,7 +52,7 @@ function App() {
                   key={index}
                   path={route.path}
                   element={
-                    <Layout currentUser={currentUser}>
+                    <Layout currentUser={isLoggedIn} user={user}>
                       <Page />
                     </Layout>
                   }

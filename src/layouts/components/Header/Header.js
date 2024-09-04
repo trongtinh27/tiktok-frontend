@@ -1,6 +1,11 @@
 import classNames from "classnames/bind";
 import config from "~/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import PropTypes from "prop-types";
+
 import {
   faEarthAsia,
   faHouseChimney,
@@ -11,10 +16,6 @@ import {
   faGear,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
-
-// import { useState } from "react";
 
 import style from "./Header.module.scss";
 import images from "~/assets/images";
@@ -25,7 +26,7 @@ import Search from "../Search";
 import { useAuth } from "~/components/AuthModal";
 
 import Menu from "~/components/Popper/Menu";
-import { MessageIcon, InboxIcon, PlusIcon, MoreIcon } from "~/components/Icons";
+import { MessageIcon, InboxIcon, MoreIcon } from "~/components/Icons";
 
 const cx = classNames.bind(style);
 
@@ -89,14 +90,20 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header({ currentUser }) {
-  const useStatus = currentUser;
+function Header({ currentUser, user }) {
+  const userStatus = currentUser;
 
   const { setIsOpenLogin } = useAuth();
 
   const handleLoginClick = () => {
     setIsOpenLogin(true); // Mở modal đăng nhập
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setIsOpenLogin(false);
+    }
+  }, [currentUser, setIsOpenLogin, user]);
 
   const handleChangeItemMenu = (menuItem) => {
     console.log(menuItem);
@@ -137,12 +144,8 @@ function Header({ currentUser }) {
           </div>
         </div>
         <div className={cx("right-container")}>
-          {useStatus ? (
+          {userStatus ? (
             <>
-              <Button upload medium leftIcon={<PlusIcon />}>
-                <span>Tải lên</span>
-              </Button>
-
               <div className={cx("message-container")}>
                 <Tippy delay={[0, 200]} content="Tin nhắn" placement="bottom">
                   <div className={cx("message-icon")}>
@@ -164,10 +167,7 @@ function Header({ currentUser }) {
               </Tippy>
               <Menu items={userMenu} onChange={handleChangeItemMenu}>
                 <div role="button" className={cx("profile-container")}>
-                  <Image
-                    src="https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/579e8895677e86683abb0f2a1583a44e.jpeg?lk3s=a5d48078&nonce=84119&refresh_token=44364db61f4534be061a3249bf9b8378&x-expires=1723899600&x-signature=9E%2FQ3IvDzSVB9IbxZUOOsPllINQ%3D&shp=a5d48078&shcp=81f88b70"
-                    alt="ảnh đại diện"
-                  ></Image>
+                  <Image src={user?.avatarURL} alt="ảnh đại diện"></Image>
                 </div>
               </Menu>
             </>
@@ -186,5 +186,10 @@ function Header({ currentUser }) {
     </header>
   );
 }
+
+Header.propTypes = {
+  currentUser: PropTypes.any.isRequired,
+  user: PropTypes.any,
+};
 
 export default Header;

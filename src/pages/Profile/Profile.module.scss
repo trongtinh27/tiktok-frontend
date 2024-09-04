@@ -1,0 +1,19 @@
+.user-container {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  padding: 32px 24px 36px;
+  flex-direction: column;
+  min-height: calc(-59px + 100vh);
+  margin: 0 auto;
+  box-sizing: content-box;
+}
+
+.center {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}

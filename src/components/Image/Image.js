@@ -21,7 +21,7 @@ function Image({
     <img
       className={classNames(styles.wrapper, className)}
       {...props}
-      src={fallback || (src === null ? tagFallback : src)}
+      src={fallback || (src === null || src === undefined ? tagFallback : src)}
       alt={alt}
       onError={handleError}
     ></img>

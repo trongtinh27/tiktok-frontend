@@ -6,14 +6,12 @@ import PropTypes from "prop-types";
 
 const cx = classNames.bind(style);
 
-function DefaultLayout({ children, currentUser, setIsOpen }) {
-  // const currentUser = false;
-
+function DefaultLayout({ children, currentUser, user }) {
   return (
     <div className={cx("wrapper")}>
-      <Header currentUser={currentUser} setIsOpen={setIsOpen} />
+      <Header currentUser={currentUser} user={user} />
       <div className={cx("container")}>
-        <SideBar currentUser={currentUser} />
+        <SideBar currentUser={currentUser} user={user} />
         <div className={cx("content")}>{children}</div>
       </div>
     </div>
@@ -23,7 +21,7 @@ function DefaultLayout({ children, currentUser, setIsOpen }) {
 DefaultLayout.propTypes = {
   children: PropTypes.node.isRequired,
   currentUser: PropTypes.any.isRequired,
-  onOpenLogin: PropTypes.func,
+  user: PropTypes.any,
 };
 
 export default DefaultLayout;
