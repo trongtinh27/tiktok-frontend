@@ -11,7 +11,7 @@ export const get = async (path, options = {}) => {
     return response;
   } catch (error) {
     // Ném lỗi để có thể xử lý ở các phần khác
-    throw error;
+    return error;
   }
 };
 
@@ -22,7 +22,7 @@ export const post = async (path, options = {}) => {
     return response;
   } catch (error) {
     // Ném lỗi để có thể xử lý ở các phần khác
-    throw error;
+    return error;
   }
 };
 

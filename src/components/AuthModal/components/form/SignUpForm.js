@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import Select, { components } from "react-select";
 import { useState, useEffect, useCallback } from "react";
+import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 
 import {
   ArrowIcon,
@@ -10,8 +12,8 @@ import {
   DropdownIcon,
 } from "~/components/Icons";
 import Button from "~/components/Button";
+import * as authService from "~/services/authService";
 import styles from "./LoginForm.module.scss";
-import { Link } from "react-router-dom";
 
 // Date data
 const days = Array.from({ length: 31 }, (_, i) => ({
@@ -115,6 +117,9 @@ const selectorStyles = {
 const cx = classNames.bind(styles);
 
 function SignUpForm() {
+  // Cookies
+  const [, setCookie] = useCookies(["token"]);
+  // State form
   const [signupWithEmail, setSignpWithEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   // Error
@@ -135,6 +140,7 @@ function SignUpForm() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [birthday, setBirthday] = useState();
 
   const handleDayChange = (selectedOption) => setSelectedDay(selectedOption);
   const handleMonthChange = (selectedOption) =>
@@ -166,6 +172,27 @@ function SignUpForm() {
     const isPasswordValid = inputPassword.length >= 8;
     const isDateValid = selectedDay && selectedMonth && selectedYear;
 
+    if (selectedDay && selectedMonth && selectedYear) {
+      // Ensure the month is zero-indexed by subtracting 1
+      const year = parseInt(selectedYear.value, 10);
+      const month = parseInt(selectedMonth.value, 10) - 1; // Zero-index the month
+      const day = parseInt(selectedDay.value, 10);
+
+      // Create the Date object
+      const date = new Date(year, month, day);
+
+      // Manually format the date as YYYY-MM-DD
+      const formattedDate =
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" + // Month needs to be 1-indexed again
+        String(date.getDate()).padStart(2, "0");
+
+      // Set the formatted date
+      setBirthday(formattedDate);
+    }
+
     setIsDisable(!(isEmailValid && isPasswordValid && isDateValid));
   }, [
     inputEmail,
@@ -177,8 +204,40 @@ function SignUpForm() {
     signupWithEmail,
   ]);
 
+  // Handle register
+  const handleRegister = async () => {
+    setIsLoading(true);
+    const res = await authService.registerApi(
+      signupWithEmail,
+      birthday,
+      signupWithEmail ? inputEmail : inputPhone,
+      inputPassword
+    );
+    if (res.status === 200) {
+      setIsLoading(false);
+
+      const data = res.data;
+      setCookie("token", data.token, {
+        path: "/",
+        maxAge: data.tokenExpiration / 1000,
+      });
+    } else if (res.response.status === 400) {
+      setIsLoading(false);
+
+      const data = res.response;
+      setError(true);
+      setErrorMessage(data.data);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <h2 className={cx("title")}>Đăng ký</h2>
       <div className={cx("description")}>Ngày sinh của bạn là ngày nào?</div>
       <div className={cx("date-selector-container")}>
@@ -282,6 +341,7 @@ function SignUpForm() {
         disabled={isDisable}
         primary
         className={cx("btn-login")}
+        onClick={handleRegister}
       >
         Đăng ký
       </Button>

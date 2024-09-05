@@ -15,7 +15,7 @@ function App() {
   const token = cookies.token;
 
   useEffect(() => {
-    if (token) {
+    if (token !== undefined) {
       const loadProfile = async () => {
         try {
           const userInfo = await authService.profileApi(token);
@@ -26,7 +26,6 @@ function App() {
           setIsLoggedIn(false);
         }
       };
-
       loadProfile();
     } else {
       setIsLoggedIn(false);

@@ -92,6 +92,7 @@ const MENU_ITEMS = [
 
 function Header({ currentUser, user }) {
   const userStatus = currentUser;
+  const userInfo = user;
 
   const { setIsOpenLogin } = useAuth();
 
@@ -113,7 +114,7 @@ function Header({ currentUser, user }) {
     {
       icon: <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>,
       title: "Xem hồ sơ",
-      to: "/user",
+      to: `/${userInfo.username}`,
     },
     {
       icon: <FontAwesomeIcon icon={faGear}></FontAwesomeIcon>,

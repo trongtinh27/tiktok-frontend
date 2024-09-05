@@ -30,7 +30,7 @@ function LoginForm() {
   const [inputEmailOrID, setInputEmailOrID] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   // Cookies
-  const [setCookie] = useCookies(["token"]);
+  const [, setCookie] = useCookies(["token"]);
 
   const toggleLoginMethod = useCallback(() => {
     setError(false);
@@ -64,7 +64,6 @@ function LoginForm() {
       }
 
       if (dataLogin != null) {
-        console.log("token: " + dataLogin);
         setCookie("token", dataLogin.token, {
           path: "/",
           maxAge: dataLogin.tokenExpiration / 1000,

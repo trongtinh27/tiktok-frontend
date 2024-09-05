@@ -23,10 +23,14 @@ function Menu({
   const [historyMenu, setHistoryMenu] = useState([{ data: items }]);
   const currentMenu = historyMenu[historyMenu.length - 1];
 
-  const [removeCookie] = useCookies(["token"]);
+  const [, setCookie, removeCookie] = useCookies(["token"]);
 
   const handleLogOut = () => {
     removeCookie(["token"]);
+    setCookie("token", undefined, {
+      path: "/",
+      maxAge: 0,
+    });
   };
 
   const renderItems = () => {
@@ -39,11 +43,13 @@ function Menu({
           onClick={() => {
             if (isParent) {
               setHistoryMenu((prev) => [...prev, item.children]);
-            } else {
-              onChange(item);
-            }
-            if (item.logout) {
+            } else if (item.logout) {
+              console.log("logout1");
               handleLogOut();
+              return;
+            } else {
+              console.log("logout2");
+              onChange(item);
             }
           }}
         />

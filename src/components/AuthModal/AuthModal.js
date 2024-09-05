@@ -44,6 +44,20 @@ function AuthModal() {
     }
   };
 
+  const renderAuthComponent = () => {
+    if (stateAuth === "login") {
+      return <Login setStateAuth={setStateAuth} />;
+    } else if (stateAuth === "signup") {
+      return isLogin ? (
+        <Login setStateAuth={setStateAuth} />
+      ) : (
+        <Signup setStateAuth={setStateAuth} />
+      );
+    } else {
+      return null; // or some default fallback component
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpenLogin}
@@ -55,28 +69,21 @@ function AuthModal() {
       <div className={cx("content")}>
         <div className={cx("auth-modal")}>
           <div className={cx("container")}>
-            {stateAuth === "loginform" ||
-              (stateAuth === "signupform" && (
-                <>
-                  <div
-                    role="button"
-                    className={cx("back-btn")}
-                    onClick={handleBack}
-                  >
-                    <BackIcon />
-                  </div>
-                </>
-              ))}
+            {(stateAuth === "loginform" || stateAuth === "signupform") && (
+              <>
+                <div
+                  role="button"
+                  className={cx("back-btn")}
+                  onClick={handleBack}
+                >
+                  <BackIcon />
+                </div>
+              </>
+            )}
             <div className={cx("content")}>
               <div className={cx("login-container")}>
                 <div className={cx("home-container ")}>
-                  {stateAuth === "login" ||
-                    (stateAuth === "signup" &&
-                      (isLogin ? (
-                        <Login setStateAuth={setStateAuth} />
-                      ) : (
-                        <Signup setStateAuth={setStateAuth} />
-                      )))}
+                  <>{renderAuthComponent()}</>
                   {stateAuth === "loginform" && <LoginForm />}
                   {stateAuth === "signupform" && <SignUpForm />}
                   {(stateAuth === "login" || stateAuth === "signup") && (

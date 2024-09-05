@@ -13,6 +13,20 @@ export const loginApi = async (account, password) => {
   }
 };
 
+export const registerApi = async (isEmail, birthday, account, password) => {
+  try {
+    const res = await request.post(`auth/register`, {
+      isEmail: isEmail,
+      birthday: birthday,
+      account: account,
+      password: password,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const profileApi = async (token) => {
   try {
     const res = await request.get(`auth/profile`, {
@@ -24,6 +38,6 @@ export const profileApi = async (token) => {
     return res;
   } catch (error) {
     // Ném lại lỗi để có thể xử lý ở các phần khác
-    throw error;
+    return error;
   }
 };
