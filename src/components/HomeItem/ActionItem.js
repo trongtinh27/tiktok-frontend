@@ -22,25 +22,33 @@ import {
 } from "~/components/Icons";
 import Image from "~/components/Image";
 
+import useCheckLogin from "~/hooks/useCheckLogin";
 import styles from "./HomeItem.module.scss";
 
 const cx = classNames.bind(styles);
 
 function ActionItem({ video }) {
+  const checkLogin = useCheckLogin();
   const [follow, setFollow] = useState(false);
   const [likeVideo, setLikeVideo] = useState(false);
   const [collectVideo, setCollectVideo] = useState(false);
 
   const handleFollow = () => {
-    setFollow((prevState) => !prevState);
+    checkLogin(() => {
+      setFollow((prevState) => !prevState);
+    });
   };
 
   const handleLike = () => {
-    setLikeVideo((prevState) => !prevState);
+    checkLogin(() => {
+      setLikeVideo((prevState) => !prevState);
+    });
   };
 
   const handleCollect = () => {
-    setCollectVideo((prevState) => !prevState);
+    checkLogin(() => {
+      setCollectVideo((prevState) => !prevState);
+    });
   };
 
   return (

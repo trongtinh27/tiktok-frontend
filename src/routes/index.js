@@ -11,6 +11,8 @@ import Live from "~/pages/Live";
 import Profile from "~/pages/Profile";
 import Upload from "~/pages/Upload";
 import Search from "~/pages/Search";
+import Messages from "~/pages/Messages";
+
 // public routes
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -21,6 +23,7 @@ const publicRoutes = [
   { path: config.routes.profile, component: Profile },
   { path: config.routes.search, component: Search },
   { path: config.routes.upload, component: Upload, layout: HeaderOnly },
+  { path: config.routes.messages, component: Messages, layout: HeaderOnly },
 ];
 // private routes
 const privateRoutes = [];

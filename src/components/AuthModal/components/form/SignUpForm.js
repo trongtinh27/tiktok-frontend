@@ -11,6 +11,7 @@ import {
   WarningIcon,
   DropdownIcon,
 } from "~/components/Icons";
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import Button from "~/components/Button";
 import * as authService from "~/services/authService";
 import styles from "./LoginForm.module.scss";
@@ -117,6 +118,8 @@ const selectorStyles = {
 const cx = classNames.bind(styles);
 
 function SignUpForm() {
+  const axiosInstance = useAxiosWithInterceptor();
+
   // Cookies
   const [, setCookie] = useCookies(["token"]);
   // State form
@@ -208,6 +211,7 @@ function SignUpForm() {
   const handleRegister = async () => {
     setIsLoading(true);
     const res = await authService.registerApi(
+      axiosInstance,
       signupWithEmail,
       birthday,
       signupWithEmail ? inputEmail : inputPhone,

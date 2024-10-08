@@ -33,6 +33,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scroll-snap-type: y mandatory;
 }
 
 html {
@@ -100,8 +101,8 @@ button,
 
 [shape="square"] {
   width: 100%;
-  // margin: unset;
-  max-height: 600px;
+  max-height: 100vh;
+  max-width: calc(128px + min(-92px + 100vh, 42vw));
 }
 
 [shape="vertical"] {
@@ -109,8 +110,12 @@ button,
 }
 
 [shape="horizontal"] {
-  height: unset;
   width: 100%;
+  max-width: calc(128px + min(-163.556px + 177.778vh, 60vw));
+}
+
+[role="circle"] {
+  border-radius: 50%;
 }
 
 // canvas[shape="square"] {
@@ -178,4 +183,34 @@ a {
   border-radius: 4px;
 }
 
-// scrollbar css
+/* Đổi màu nền của thông báo */
+
+.rnc__notification-content {
+  padding: 10px 8px;
+}
+
+.rnc__notification-item--info {
+  background-color: rgba(84, 84, 84, 0.92);
+  border-left: 8px solid rgba(84, 84, 84, 0.92);
+
+  .rnc__notification-timer {
+    background-color: rgb(18, 18, 18);
+  }
+  .rnc__notification-timer-filler {
+    background-color: rgb(37, 37, 37);
+  }
+  .rnc__notification-close-mark {
+    background-color: rgba(84, 84, 84, 0.92);
+  }
+}
+.rnc__notification-message {
+  color: var(--white-opacity-50);
+  font-family: "TikTokFont";
+  font-weight: 700;
+  max-width: calc(100% - 15px);
+  font-size: 14px;
+  line-height: 150%;
+  word-wrap: break-word;
+  margin-bottom: 0;
+  margin-top: 0;
+}

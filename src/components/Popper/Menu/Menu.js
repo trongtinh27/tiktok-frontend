@@ -2,8 +2,9 @@ import classNames from "classnames/bind";
 import Tippy from "@tippyjs/react/headless";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
+import { useUser } from "~/contexts/UserContext";
 import { Wrapper as PopperWrapper } from "~/components/Popper";
 import MenuItem from "./MenuItem";
 import style from "./Menu.module.scss";
@@ -23,15 +24,18 @@ function Menu({
   const [historyMenu, setHistoryMenu] = useState([{ data: items }]);
   const currentMenu = historyMenu[historyMenu.length - 1];
 
-  const [, setCookie, removeCookie] = useCookies(["token"]);
+  // const [, setCookie, removeCookie] = useCookies(["token"]);
 
-  const handleLogOut = () => {
-    removeCookie(["token"]);
-    setCookie("token", undefined, {
-      path: "/",
-      maxAge: 0,
-    });
-  };
+  const { logout } = useUser();
+
+  // const handleLogOut = () => {
+  //   removeCookie(["token"]);
+  //   setCookie("token", undefined, {
+  //     path: "/",
+  //     maxAge: 0,
+  //   });
+  //   clearUser();
+  // };
 
   const renderItems = () => {
     return currentMenu.data.map((item, index) => {
@@ -44,11 +48,9 @@ function Menu({
             if (isParent) {
               setHistoryMenu((prev) => [...prev, item.children]);
             } else if (item.logout) {
-              console.log("logout1");
-              handleLogOut();
+              logout();
               return;
             } else {
-              console.log("logout2");
               onChange(item);
             }
           }}

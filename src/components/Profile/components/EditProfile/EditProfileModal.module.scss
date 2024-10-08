@@ -134,6 +134,7 @@
 
 .avatar-container {
   width: 96px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-items: center;
@@ -203,9 +204,9 @@
   overflow: hidden;
 }
 
-.link {
-  margin-top: 16px;
-}
+// .link {
+//   margin-top: 16px;
+// }
 
 .tip {
   margin-top: 8px;
@@ -232,6 +233,27 @@
   left: 328px;
   position: absolute;
   top: 11px;
+}
+
+.loading {
+  width: 24px;
+  height: 24px;
+  fill: var(--white-color);
+  left: 328px;
+  position: absolute;
+  top: 18px;
+}
+
+.loading {
+  animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+  from {
+    transform: translateY(-50%) rotate(0);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
 }
 
 .error {
@@ -270,7 +292,7 @@
 }
 
 .footer-container {
-  height: 86px;
+  height: 80px;
   display: flex;
   padding: 0px 24px;
   justify-content: flex-end;

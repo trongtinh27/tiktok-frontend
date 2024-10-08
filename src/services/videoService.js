@@ -1,8 +1,6 @@
-import * as request from "~/ultis/httpRequest";
-
-export const getAllVideo = async () => {
+export const getAllVideo = async (axiosInstance) => {
   try {
-    const res = await request.get(`video/all`, {});
+    const res = await axiosInstance.get(`video/all`);
     // console.log("data: " + res);
 
     return res.data;

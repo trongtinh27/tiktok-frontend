@@ -94,16 +94,11 @@
   .btn {
     background-color: transparent !important;
 
-    span {
+    svg {
       width: 26px;
-      height: 16px;
-
-      svg {
-        width: 26px;
-        height: 26px;
-        fill: var(--white-color);
-        transform: none;
-      }
+      height: 26px;
+      fill: var(--white-color);
+      transform: none;
     }
   }
   .message-supbadge {

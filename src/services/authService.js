@@ -1,8 +1,6 @@
-import * as request from "~/ultis/httpRequest";
-
-export const loginApi = async (account, password) => {
+export const loginApi = async (axiosInstance, account, password) => {
   try {
-    const res = await request.post(`auth/login`, {
+    const res = await axiosInstance.post(`auth/login`, {
       account: account,
       password: password,
     });
@@ -13,9 +11,50 @@ export const loginApi = async (account, password) => {
   }
 };
 
-export const registerApi = async (isEmail, birthday, account, password) => {
+export const comfirmLoginApi = async (axiosInstance, account, password) => {
   try {
-    const res = await request.post(`auth/register`, {
+    const res = await axiosInstance.post(`auth/confirmLogin`, {
+      account: account,
+      password: password,
+    });
+    return res;
+  } catch (error) {
+    // Ném lại lỗi để có thể xử lý ở các phần khác
+    throw error;
+  }
+};
+
+export const confirmLoginApi = async (axiosInstance, account, password) => {
+  try {
+    const res = await axiosInstance.post(`auth/confirmLogin`, {
+      account: account,
+      password: password,
+    });
+    return res;
+  } catch (error) {
+    // Ném lại lỗi để có thể xử lý ở các phần khác
+    throw error;
+  }
+};
+
+export const refreshTokenApi = async (axiosInstance) => {
+  try {
+    const res = await axiosInstance.post(`auth/refreshToken`, {});
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const registerApi = async (
+  axiosInstance,
+  isEmail,
+  birthday,
+  account,
+  password
+) => {
+  try {
+    const res = await axiosInstance.post(`auth/register`, {
       isEmail: isEmail,
       birthday: birthday,
       account: account,
@@ -27,17 +66,11 @@ export const registerApi = async (isEmail, birthday, account, password) => {
   }
 };
 
-export const profileApi = async (token) => {
+export const logoutApi = async (axiosInstance) => {
   try {
-    const res = await request.get(`auth/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const res = axiosInstance.post(`auth/logout`);
     return res;
   } catch (error) {
-    // Ném lại lỗi để có thể xử lý ở các phần khác
     return error;
   }
 };

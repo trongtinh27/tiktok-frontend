@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import * as authService from "~/services/authService";
 import {
   ArrowIcon,
@@ -30,7 +31,9 @@ function LoginForm() {
   const [inputEmailOrID, setInputEmailOrID] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   // Cookies
-  const [, setCookie] = useCookies(["token"]);
+  const [, setCookie] = useCookies(["token", "tiktok-jwt-refresh"]);
+
+  const axiosInstance = useAxiosWithInterceptor();
 
   const toggleLoginMethod = useCallback(() => {
     setError(false);
@@ -56,20 +59,62 @@ function LoginForm() {
 
     try {
       if (loginWithEmail) {
-        const res = await authService.loginApi(inputEmailOrID, inputPassword);
-        dataLogin = res.data;
+        dataLogin = await authService.loginApi(
+          axiosInstance,
+          inputEmailOrID,
+          inputPassword
+        );
       } else {
-        const res = await authService.loginApi(inputPhone, inputPassword);
-        dataLogin = res.data;
+        dataLogin = await authService.loginApi(
+          axiosInstance,
+          inputPhone,
+          inputPassword
+        );
       }
 
-      if (dataLogin != null) {
-        setCookie("token", dataLogin.token, {
+      if (dataLogin.status === 200) {
+        // Lưu Access token
+        setCookie("token", dataLogin.data.token, {
           path: "/",
-          maxAge: dataLogin.tokenExpiration / 1000,
+          maxAge: dataLogin.data.tokenExpiration / 1000,
         });
+      } else {
+        setError(true);
+        setErrorMessage("Thông tin không chính xác");
       }
     } catch (error) {
+      console.log(error);
+      if (error.response?.status === 409) {
+        if (window.confirm(error.response.data.message)) {
+          console.log(error.response.data.message);
+
+          if (loginWithEmail) {
+            dataLogin = await authService.confirmLoginApi(
+              axiosInstance,
+              inputEmailOrID,
+              inputPassword
+            );
+          } else {
+            dataLogin = await authService.confirmLoginApi(
+              axiosInstance,
+              inputPhone,
+              inputPassword
+            );
+          }
+
+          if (dataLogin.status === 200) {
+            // Lưu Access token
+            setCookie("token", dataLogin.data.token, {
+              path: "/",
+              maxAge: dataLogin.data.tokenExpiration / 1000,
+            });
+          } else {
+            setError(true);
+            setErrorMessage("Thông tin không chính xác");
+          }
+        }
+      }
+
       setError(true);
       setErrorMessage(error.response?.data?.message);
     } finally {
@@ -96,7 +141,7 @@ function LoginForm() {
       <h2 className={cx("title")}>Đăng nhập</h2>
       <div className={cx("description")}>
         {loginWithEmail ? "Email hoặc TikTok ID" : "Điện thoại"}
-        <Link to="" className={cx("des-link")} onClick={toggleLoginMethod}>
+        <Link className={cx("des-link")} onClick={toggleLoginMethod}>
           {loginWithEmail
             ? "Đăng nhập bằng số điện thoại"
             : "Đăng nhập bằng email hoặc TikTok ID"}

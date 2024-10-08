@@ -3,10 +3,11 @@ const routes = {
   following: "/following",
   explore: "/explore",
   friends: "/friends",
-  profile: "/:nickname",
+  profile: "/:username", // Đường dẫn động cho profile
   upload: "/upload",
   search: "/search",
   live: "/live",
+  messages: "/messages",
 };
 
 export default routes;

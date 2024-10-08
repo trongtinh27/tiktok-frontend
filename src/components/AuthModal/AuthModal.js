@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
 import Modal from "react-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useUser } from "~/contexts/UserContext";
 import { CloseIcon, BackIcon } from "~/components/Icons";
 import styles from "./AuthModal.module.scss";
 import { useAuth } from "../AuthModal";
@@ -15,6 +16,7 @@ const cx = classNames.bind(styles);
 
 function AuthModal() {
   const [stateAuth, setStateAuth] = useState("login");
+  const { isLoggedIn } = useUser();
 
   const { isOpenLogin, setIsOpenLogin } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
@@ -57,6 +59,14 @@ function AuthModal() {
       return null; // or some default fallback component
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsLogin(true);
+      setStateAuth("login");
+      setIsOpenLogin(false);
+    }
+  }, [isLoggedIn, setIsOpenLogin]);
 
   return (
     <Modal

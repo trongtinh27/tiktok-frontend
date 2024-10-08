@@ -6,6 +6,7 @@
   padding: 20px 0px;
   position: relative;
   max-width: 692px;
+  scroll-snap-align: end;
   height: calc(-60px + 100vh);
   transition-property: margin;
   transition-duration: 0.3s;

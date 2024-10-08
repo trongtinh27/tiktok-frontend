@@ -1,10 +1,9 @@
 import classNames from "classnames/bind";
-import config from "~/config";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import PropTypes from "prop-types";
 
 import {
   faEarthAsia,
@@ -17,16 +16,21 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
+import config from "~/config";
+import { useUser } from "~/contexts/UserContext";
 import style from "./Header.module.scss";
 import images from "~/assets/images";
-
 import Button from "~/components/Button";
 import Image from "~/components/Image";
 import Search from "../Search";
 import { useAuth } from "~/components/AuthModal";
-
 import Menu from "~/components/Popper/Menu";
-import { MessageIcon, InboxIcon, MoreIcon } from "~/components/Icons";
+import {
+  MessageIcon,
+  MessageActiveIcon,
+  InboxIcon,
+  MoreIcon,
+} from "~/components/Icons";
 
 const cx = classNames.bind(style);
 
@@ -90,9 +94,8 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header({ currentUser, user }) {
-  const userStatus = currentUser;
-  const userInfo = user;
+function Header() {
+  const { user, isLoggedIn } = useUser();
 
   const { setIsOpenLogin } = useAuth();
 
@@ -101,10 +104,10 @@ function Header({ currentUser, user }) {
   };
 
   useEffect(() => {
-    if (currentUser) {
+    if (isLoggedIn) {
       setIsOpenLogin(false);
     }
-  }, [currentUser, setIsOpenLogin, user]);
+  }, [isLoggedIn, setIsOpenLogin, user]);
 
   const handleChangeItemMenu = (menuItem) => {
     console.log(menuItem);
@@ -114,7 +117,7 @@ function Header({ currentUser, user }) {
     {
       icon: <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>,
       title: "Xem hồ sơ",
-      to: `/${userInfo.username}`,
+      to: `/@${user?.username}`,
     },
     {
       icon: <FontAwesomeIcon icon={faGear}></FontAwesomeIcon>,
@@ -145,15 +148,24 @@ function Header({ currentUser, user }) {
           </div>
         </div>
         <div className={cx("right-container")}>
-          {userStatus ? (
+          {isLoggedIn ? (
             <>
               <div className={cx("message-container")}>
                 <Tippy delay={[0, 200]} content="Tin nhắn" placement="bottom">
                   <div className={cx("message-icon")}>
-                    <Button className={cx("btn")} to="/message">
-                      <MessageIcon />
-                      <sup className={cx("message-supbadge")}>1</sup>
-                    </Button>
+                    <NavLink
+                      className={({ isActive }) =>
+                        cx("btn", { active: isActive })
+                      }
+                      to="/messages"
+                    >
+                      {({ isActive }) => (
+                        <>
+                          {isActive ? <MessageActiveIcon /> : <MessageIcon />}
+                          <sup className={cx("message-supbadge")}>1</sup>
+                        </>
+                      )}
+                    </NavLink>
                   </div>
                 </Tippy>
               </div>
@@ -187,10 +199,5 @@ function Header({ currentUser, user }) {
     </header>
   );
 }
-
-Header.propTypes = {
-  currentUser: PropTypes.any.isRequired,
-  user: PropTypes.any,
-};
 
 export default Header;

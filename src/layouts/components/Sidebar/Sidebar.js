@@ -1,14 +1,15 @@
 import classNames from "classnames/bind";
-import PropTypes from "prop-types";
+import { useAuth } from "~/components/AuthModal";
+import { useEffect, useState } from "react";
 
+import * as followService from "~/services/followService";
+import { useUser } from "~/contexts/UserContext";
 import Menu, { MenuItem } from "./Menu";
 import AccountFollow, { AccountFollowItem } from "./AccountFollow";
 import Footer, { FooterItem } from "./Footer";
-
 import styles from "./Sidebar.module.scss";
 import Image from "~/components/Image";
 import Button from "~/components/Button";
-
 import {
   HomeIcon,
   HomeIconActive,
@@ -25,12 +26,21 @@ import {
   LiveIconActive,
   UploadIcon,
 } from "~/components/Icons";
-import { useAuth } from "~/components/AuthModal";
 import config from "~/config";
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 
 const cx = classNames.bind(styles);
 
-function SideBar({ currentUser, user }) {
+function SideBar() {
+  const axiosInstance = useAxiosWithInterceptor();
+  const { user, isLoggedIn } = useUser();
+  // State
+  const [listFollowing, setListFollowing] = useState([]);
+
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 5;
+
   const loggedInUsers = [
     {
       title: "Dành cho bạn",
@@ -119,7 +129,6 @@ function SideBar({ currentUser, user }) {
       iconActive: <UserIcon className={cx("icon")} />,
     },
   ];
-  const userStatus = currentUser;
 
   const { setIsOpenLogin } = useAuth();
 
@@ -127,13 +136,47 @@ function SideBar({ currentUser, user }) {
     setIsOpenLogin(true); // Mở modal đăng nhập
   };
 
+  const handleShowMore = () => {
+    setOffset((prevOffset) => prevOffset + limit);
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getListFollowing = async () => {
+        try {
+          const res = await followService.getListFollowingApi(
+            axiosInstance,
+            user.id,
+            offset,
+            limit
+          );
+          if (res.status === 200) {
+            setListFollowing((prev) => {
+              if (prev.length === 0) {
+                return res.data;
+              } else {
+                return [...prev, ...res.data];
+              }
+            });
+            if (res.data.length < limit) {
+              setHasMore(false);
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getListFollowing();
+    }
+  }, [offset, limit, isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className={cx("wrapper")}>
       <aside className={cx("scroll-container")}>
         <div className={cx("sidebar-container")}>
           <div className={cx("menu-container")}>
             <Menu>
-              {userStatus
+              {isLoggedIn
                 ? loggedInUsers.map((data) => (
                     <MenuItem
                       key={data.title}
@@ -153,7 +196,13 @@ function SideBar({ currentUser, user }) {
                     />
                   ))}
             </Menu>
-            {!userStatus && (
+            {isLoggedIn ? (
+              <AccountFollow hasMore={hasMore} handleShowMore={handleShowMore}>
+                {listFollowing?.map((account, index) => (
+                  <AccountFollowItem key={index} accountData={account} />
+                ))}
+              </AccountFollow>
+            ) : (
               <div className={cx("login-container")}>
                 <p className={cx("login-hint")}>
                   Đăng nhập để follow các tác giả, thích video và xem bình luận.
@@ -168,18 +217,6 @@ function SideBar({ currentUser, user }) {
                 </Button>
               </div>
             )}
-            {userStatus && (
-              <AccountFollow>
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-                <AccountFollowItem />
-              </AccountFollow>
-            )}
 
             <Footer>
               <FooterItem title={"Công ty"} />
@@ -192,10 +229,5 @@ function SideBar({ currentUser, user }) {
     </div>
   );
 }
-
-SideBar.propTypes = {
-  currentUser: PropTypes.bool.isRequired,
-  user: PropTypes.any,
-};
 
 export default SideBar;
