@@ -5,6 +5,7 @@
   --primary-opacity-1: rgba(255, 59, 92, 1);
   --darkcolor: rgb(18, 18, 18);
   --darkcolor-opacity-75: rgba(18, 18, 18, 0.75);
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
   --dark-gray: rgba(37, 37, 37, 1);
   --text-color: #333;
@@ -55,11 +56,12 @@ body {
 body {
   .tippy-box {
     text-align: left;
-    height: 37px;
+    // height: 37px;
+    height: auto;
     text-align: center;
     text-decoration: none;
     border-radius: 8px;
-    font-weight: 600;
+    // font-weight: 600;
     font-size: 1.6rem;
     line-height: 2.2rem;
     background-color: rgba(84, 84, 84, 0.92);
@@ -68,6 +70,7 @@ body {
   }
 
   .tippy-content {
+    text-align: left;
     padding: 0 9px;
   }
 }

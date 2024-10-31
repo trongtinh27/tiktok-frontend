@@ -4,10 +4,10 @@ import styles from "./HeaderOnly.module.scss";
 
 const cx = classNames.bind(styles);
 
-function HeaderOnly({ children, currentUser }) {
+function HeaderOnly({ children }) {
   return (
     <div>
-      <Header currentUser={currentUser} />
+      <Header searchVisible={false} />
       <div className={cx("container")}>
         <div className={cx("content")}>{children}</div>
       </div>

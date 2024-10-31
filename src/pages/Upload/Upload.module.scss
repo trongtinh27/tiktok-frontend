@@ -1,0 +1,23 @@
+.container {
+  width: 100%;
+  height: calc(100% - 60px);
+}
+
+.wrapper {
+  position: relative;
+  background-color: var(--darkcolor);
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+  min-width: 0px;
+  margin: 0px auto;
+  padding-top: 16px;
+  padding-bottom: 240px;
+  background-color: var(--bg-color-secondary);
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0px auto;
+  height: 100%;
+}

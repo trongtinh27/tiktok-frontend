@@ -94,7 +94,7 @@ const MENU_ITEMS = [
   },
 ];
 
-function Header() {
+function Header({ searchVisible }) {
   const { user, isLoggedIn } = useUser();
 
   const { setIsOpenLogin } = useAuth();
@@ -142,11 +142,14 @@ function Header() {
             </a>
           </div>
         </div>
-        <div className={cx("center-container")}>
-          <div className={cx("search-container")}>
-            <Search></Search>
+        {searchVisible && (
+          <div className={cx("center-container")}>
+            <div className={cx("search-container")}>
+              <Search></Search>
+            </div>
           </div>
-        </div>
+        )}
+
         <div className={cx("right-container")}>
           {isLoggedIn ? (
             <>
