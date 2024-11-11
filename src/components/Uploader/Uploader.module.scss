@@ -109,6 +109,7 @@
 
 .text {
   padding-top: 2px;
+  padding-right: 2px;
 }
 
 .title {
@@ -347,6 +348,26 @@
 
 .cover-content {
   margin-bottom: 24px;
+}
+
+.poster-upload {
+  display: none;
+}
+
+.poster-cover-cantainer {
+  width: 150px;
+  height: 200px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.poster-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .cover-title,

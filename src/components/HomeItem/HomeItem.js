@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import HeadlessTippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
 import Image from "~/components/Image";
@@ -168,7 +169,7 @@ function HomeItem({ shape, video }) {
                   <span>
                     <picture>
                       <Image
-                        src={video.thumbnailUrl}
+                        src={video?.thumbnailUrl}
                         fallback="https://via.placeholder.com/56x100"
                         className={cx("image-thumnail")}
                       />

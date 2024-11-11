@@ -1862,7 +1862,7 @@ export const Icon16x9Screen = forwardRef(
           ry="10"
           fill="white"
           stroke="#1A202E"
-          stroke-width="8"
+          strokeWidth="8"
         />
       </svg>
     );
@@ -1892,7 +1892,7 @@ export const Icon9x16Screen = forwardRef(
           ry="10"
           fill="white"
           stroke="#1A202E"
-          stroke-width="8"
+          strokeWidth="8"
         />
       </svg>
     );
@@ -1922,7 +1922,7 @@ export const Icon1x1Screen = forwardRef(
           ry="10"
           fill="white"
           stroke="#1A202E"
-          stroke-width="8"
+          strokeWidth="8"
         />
       </svg>
     );

@@ -8,3 +8,12 @@ export const getAllVideo = async (axiosInstance) => {
     console.error(error);
   }
 };
+
+export const uploadVideo = async (axiosInstance, uploadVideoRequest) => {
+  try {
+    const res = await axiosInstance.post(`video/upload`, uploadVideoRequest);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
