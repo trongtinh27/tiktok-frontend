@@ -50,20 +50,21 @@ const useAxiosWithInterceptor = () => {
           try {
             // Gọi API refresh token
             const response = await httpRequest.post("auth/refreshToken", {});
+            if (response.status === 200) {
+              // Cập nhật lại token mới
+              setCookie("token", response.data.token, {
+                path: "/",
+                maxAge: response.data.tokenExpiration / 1000,
+              });
 
-            // Cập nhật lại token mới
-            setCookie("token", response.data.token, {
-              path: "/",
-              maxAge: response.data.tokenExpiration / 1000,
-            });
+              // Thêm token mới vào request ban đầu
+              originalRequest.headers[
+                "Authorization"
+              ] = `Bearer ${response.data.token}`;
 
-            // Thêm token mới vào request ban đầu
-            originalRequest.headers[
-              "Authorization"
-            ] = `Bearer ${response.data.token}`;
-
-            // Gửi lại request với token mới
-            return httpRequest(originalRequest);
+              // Gửi lại request với token mới
+              return httpRequest(originalRequest);
+            }
           } catch (refreshError) {
             if (refreshError.response?.status === 401) {
               // Nếu refresh token thất bại (401), thì logout
@@ -73,7 +74,7 @@ const useAxiosWithInterceptor = () => {
               // Trả về lỗi để thông báo cho người dùng
               return Promise.reject(refreshError);
             }
-            if (refreshError.response?.status === 500) {
+            if (refreshError.response?.status === 400) {
               removeCookie("token", { path: "/" });
               removeCookie("tiktok-jwt-refresh", { path: "/" });
 

@@ -30,3 +30,12 @@ export const getListFollowingApi = async (
     return error;
   }
 };
+
+export const addFollow = async (axiosInstance, followRequest) => {
+  try {
+    const res = await axiosInstance.post(`follow/addFollow`, followRequest);
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
