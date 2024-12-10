@@ -3,7 +3,6 @@ import classNames from "classnames/bind";
 import HeadlessTippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
 import Image from "~/components/Image";
@@ -263,7 +262,7 @@ function HomeItem({ shape, video }) {
                       to={`/@${video.username}`}
                       className={cx("author-link")}
                     >
-                      <h3 className={cx("author-title")}>tinhsubo</h3>
+                      <h3 className={cx("author-title")}>{video.username}</h3>
                     </Link>
                   </div>
                 </div>

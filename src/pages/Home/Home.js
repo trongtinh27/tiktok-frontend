@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import HomeItem from "~/components/HomeItem";
-import { useUser } from "~/contexts/UserContext";
 
+import { useUser } from "~/contexts/UserContext";
+import HomeItem from "~/components/HomeItem";
 import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import * as videoService from "~/services/videoService";
 import styles from "./Home.module.scss";
@@ -34,6 +34,7 @@ function Home() {
 
       // setLoading(false);
     };
+
     fetchApi();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

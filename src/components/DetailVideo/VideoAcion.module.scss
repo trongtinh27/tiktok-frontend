@@ -1,0 +1,105 @@
+.container {
+  position: relative;
+  padding: 16px 0px 0px;
+}
+
+.action-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.first {
+  gap: 20px;
+}
+
+.btn-action-item {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+  border-radius: 50%;
+  transition: 200ms ease-in-out;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.12);
+  padding: 6px;
+  margin-right: 6px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+}
+
+.text {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+}
+
+.action-link {
+  display: block;
+  font-size: 0px;
+  margin-right: 8px;
+}
+
+.link-icon {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.copy-link {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.link-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  padding: 7px 0px 5px 12px;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-copy {
+  background: none rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+  font-size: 14px;
+  flex: 0 0 auto;
+  padding: 7px 18px;
+}

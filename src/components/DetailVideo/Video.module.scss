@@ -1,0 +1,566 @@
+.video-blur-background {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  filter: blur(2px);
+  left: 50%;
+  top: 50%;
+  transform: scale(11);
+  opacity: 0.3;
+}
+
+.blur {
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  width: initial;
+  height: initial;
+  background: none;
+  opacity: 1;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  inset: 0px;
+}
+
+.background {
+  position: absolute;
+  inset: 0px;
+  box-sizing: border-box;
+  padding: 0px;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0px;
+  height: 0px;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+
+.video-wrapper {
+  //   display: none;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.08);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+  margin: 0px auto;
+}
+
+.media-card {
+  position: relative;
+  box-sizing: border-box;
+  background-size: cover;
+  height: 100%;
+}
+
+.canvas-media {
+  display: block;
+  visibility: hidden;
+  height: 100%;
+}
+
+.horizontal {
+  height: unset;
+}
+
+.square {
+  display: block;
+  width: 100%;
+  // margin: unset;
+  margin: unset;
+
+  // height: 100%;
+  object-fit: contain;
+}
+
+.video-player-container {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  //   border-radius: 16px;
+  overflow: visible;
+
+  &:hover {
+    .play-control {
+      opacity: 1;
+    }
+  }
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  //   border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.08);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.thumnail {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  span {
+    box-sizing: border-box;
+    display: block;
+    overflow: hidden;
+    width: initial;
+    height: initial;
+    background: none;
+    opacity: 1;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    inset: 0px;
+  }
+}
+
+.image-thumnail {
+  position: absolute;
+  inset: 0px;
+  box-sizing: border-box;
+  padding: 0px;
+  border: none;
+  margin: auto;
+  display: block;
+  width: 0px;
+  height: 0px;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.basic-media {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.web-media {
+  width: 100%;
+  height: 100%;
+
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.action-mask {
+  height: 40%;
+  background: linear-gradient(rgba(18, 18, 18, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  transition-duration: 0.3s;
+}
+
+.media-card-top {
+  transition: opacity 0.3s;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.media-controls {
+  padding: 4px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  transition: opacity 0.3s;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.controls-center {
+  display: flex;
+  height: 40px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.audio-control {
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
+.mute-icon {
+  padding: 8px;
+  opacity: 1;
+  width: 40px;
+  height: 40px;
+  transition: opacity 0.3s;
+  filter: drop-shadow(rgba(12, 12, 12, 0.2) 2px 2px 5px);
+
+  svg {
+    fill: var(--white-color);
+  }
+}
+
+.play-control {
+  display: flex;
+  height: 40px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  -webkit-box-align: center;
+  align-items: center;
+  transition: opacity 0.3s;
+  opacity: 0;
+  padding: 8px;
+  right: unset;
+}
+
+.play-icon {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-radius: unset;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    fill: var(--white-color);
+  }
+}
+
+.volume-control-container {
+  width: 64px;
+  height: 24px;
+  display: block;
+  position: relative;
+  cursor: initial;
+  background: rgba(22, 24, 35, 0.34);
+  border-radius: 32px;
+  margin: 7px 8px 7px 0px;
+}
+/* Ẩn thanh mặc định của input range */
+.volume-input {
+  -webkit-appearance: none;
+  width: 48px;
+  height: 2px;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  cursor: pointer;
+  border-radius: 4px;
+  top: 11px;
+  left: 8px;
+  padding: 0; /* Loại bỏ padding */
+  margin: 0; /* Loại bỏ margin */
+  transform: scaleX(
+    1
+  ); /* Để thanh mặc định có kích thước giống với `.volume-control-bar` */
+}
+
+/* Xử lý phần thumb (nút tròn kéo) */
+.volume-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background-color: var(--white-color);
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  top: 0; /* Đảm bảo nút tròn căn chỉnh đúng */
+  margin: 0; /* Loại bỏ margin để tránh ảnh hưởng tới vị trí */
+  top: -5px; /* Để căn chỉnh thumb với thanh */
+}
+
+/* Thumb trên Firefox */
+.volume-input::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background-color: var(--white-color);
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  top: 4px;
+}
+
+/* Ẩn track mặc định trên Firefox */
+.volume-input::-moz-range-track {
+  background-color: transparent;
+}
+
+/* Ẩn track mặc định trên IE */
+.volume-input::-ms-track {
+  background-color: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+/* Xử lý phần track (thanh trượt) */
+.volume-input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  background-color: var(--white-color);
+  border-radius: 4px;
+
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+// .media-card-bottom {
+//   display: none;
+//   position: relative;
+//   top: -100px;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   padding: 0 12px 16px;
+//   max-height: 50%;
+//   display: flex;
+//   flex-direction: column;
+//   -webkit-box-pack: end;
+//   justify-content: center;
+//   border-bottom-left-radius: 16px;
+//   border-bottom-right-radius: 16px;
+//   background: linear-gradient(
+//     rgba(0, 0, 0, 0) 0%,
+//     rgba(0, 0, 0, 0) 12%,
+//     rgba(0, 0, 0, 0.01) 21%,
+//     rgba(0, 0, 0, 0.02) 29%,
+//     rgba(0, 0, 0, 0.03) 35%,
+//     rgba(0, 0, 0, 0.04) 40%,
+//     rgba(0, 0, 0, 0.06) 45%,
+//     rgba(0, 0, 0, 0.08) 48%,
+//     rgba(0, 0, 0, 0.1) 52%,
+//     rgba(0, 0, 0, 0.12) 55%,
+//     rgba(0, 0, 0, 0.14) 60%,
+//     rgba(0, 0, 0, 0.16) 65%,
+//     rgba(0, 0, 0, 0.18) 71%,
+//     rgba(0, 0, 0, 0.2) 79%,
+//     rgba(0, 0, 0, 0.22) 88%,
+//     rgba(0, 0, 0, 0.24) 100%
+//   );
+//   color: var(--white-opacity-90);
+//   font-weight: 500;
+//   transition: opacity 0.3s;
+// }
+
+// .author-container-wrapper {
+//   display: flex;
+//   -webkit-box-align: center;
+//   align-items: center;
+//   gap: 8px;
+//   margin-top: 8px;
+//   margin-bottom: 8px;
+// }
+
+// .author-container {
+//   min-width: 0px;
+//   overflow-x: hidden;
+//   text-overflow: ellipsis;
+//   text-wrap: nowrap;
+
+//   display: flex;
+//   flex-direction: row;
+//   -webkit-box-align: center;
+//   align-items: center;
+//   &:hover {
+//     .author-title {
+//       text-decoration: underline;
+//     }
+//   }
+// }
+
+// .author-link {
+//   display: block;
+// }
+
+// .author-title {
+//   font-family: "TikTokDisplayFont";
+//   font-weight: 500;
+//   font-size: 14px;
+//   line-height: 18px;
+//   display: inline-block;
+//   color: var(--white-opacity-90);
+// }
+
+// .description-container {
+//   max-height: 50%;
+//   overflow-y: auto;
+//   overscroll-behavior-y: contain;
+// }
+
+// .multiline-text-container {
+//   max-height: 100%;
+//   overflow-y: auto;
+//   display: flex;
+//   width: 100%;
+//   overflow: hidden;
+//   position: relative;
+//   padding-bottom: 20px;
+// }
+
+// .multiline-text {
+//   white-space: pre-wrap;
+//   width: 100%;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   display: -webkit-box;
+//   max-height: unset;
+//   -webkit-line-clamp: 999;
+//   -webkit-box-orient: vertical;
+//   overflow-y: auto;
+
+//   &::before {
+//     content: "";
+//     height: calc(100% - 21px);
+//     float: right;
+//     width: 0px;
+//     margin-top: 0px;
+//   }
+// }
+
+// .multiline-text-content {
+//   font-size: 14px;
+//   line-height: 18px;
+//   white-space: pre-wrap;
+//   word-break: break-word;
+// }
+
+// .text-content {
+//   display: inline;
+//   font-weight: 400;
+// }
+
+.button-expand {
+  color: var(--white-opacity-90);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  border: none;
+  outline: none;
+  background: none;
+  height: 21px;
+  flex-shrink: 0;
+}
+
+.progressbar-container {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.video-control-container {
+  height: 16px;
+  width: 100%;
+  padding-inline: 12px;
+  position: absolute;
+  transition: opacity 0.3s;
+  cursor: initial;
+  display: flex;
+  -webkit-box-align: end;
+  align-items: end;
+  bottom: 0px;
+  padding: 0px;
+  overflow: hidden clip;
+  opacity: 1;
+}
+
+.seek-bar-container {
+  width: 100%;
+  flex: 1 1 auto;
+  position: relative;
+  height: 4px;
+  transition: height 300ms ease-in-out;
+}
+
+.seek-bar-progress {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.34);
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.seek-bar-circle {
+  display: none;
+  width: 12px;
+  height: 12px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 1;
+  opacity: 1;
+}
+
+.seek-bar {
+  height: 4px;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transform-origin: left center;
+  background-color: var(--primary);
+}
