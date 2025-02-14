@@ -465,3 +465,54 @@
     pointer-events: none;
   }
 }
+
+.emty {
+  flex: 0 0 auto;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 490px;
+  align-items: center;
+  margin: 0px auto;
+}
+
+.emty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0px auto;
+}
+
+.emty-icon {
+  height: 92px;
+  width: 92px;
+  background-color: rgba(45, 45, 45, 1);
+  color: rgba(246, 246, 246, 1);
+  border-radius: 50%;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  .icon {
+    fill: white;
+  }
+}
+
+.emty-title {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 24px;
+}
+
+.emty-content {
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 8px;
+}

@@ -1,18 +1,43 @@
 import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
 
-import { BlockIcon } from "~/components/Icons";
+import { BlockIcon, EmtyIcon } from "~/components/Icons";
 import VideoItem from "./VideoItem";
+import * as videoService from "~/services/videoService";
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
+
 import styles from "./User.module.scss";
-import { useState } from "react";
 
 const cx = classNames.bind(styles);
 
-function Videos() {
+function Videos({ username }) {
+  const axiosInstance = useAxiosWithInterceptor();
+
   const [feedTab, setFeedTab] = useState("post");
+  const [videoList, setVideoList] = useState([]);
+  const actualUsername = username?.slice(1);
 
   const handleChangeTab = (tab) => {
     setFeedTab(tab);
   };
+
+  const loadVideo = async (actualUsername) => {
+    try {
+      const res = await videoService.getVideoByUser(
+        axiosInstance,
+        actualUsername
+      );
+      if (res.status === 200) {
+        setVideoList(res.data);
+      }
+    } catch (error) {
+      console.error("Error loading videos:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadVideo(actualUsername);
+  }, [actualUsername]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={cx("video-wrapper")}>
@@ -57,17 +82,27 @@ function Videos() {
         </div>
       </div>
       <div className={cx("detail-container")}>
-        <div className={cx("content-list")}>
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-          <VideoItem />
-        </div>
+        {videoList?.length !== 0 ? (
+          <div className={cx("content-list")}>
+            {videoList?.map((video) => (
+              <VideoItem key={video.id} videoData={video} />
+            ))}
+          </div>
+        ) : (
+          <div className={cx("emty")}>
+            <div className={cx("emty-container")}>
+              <div className={cx("emty-icon")}>
+                <EmtyIcon
+                  className={cx("icon")}
+                  width="40px"
+                  height="40px"
+                ></EmtyIcon>
+              </div>
+              <p className={cx("emty-title")}>Không có nội dung</p>
+              <p className={cx("emty-content")}>Không có Video để hiển thị</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

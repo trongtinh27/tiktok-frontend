@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import HeadlessTippy from "@tippyjs/react/headless";
 
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import * as searchService from "~/services/searchService";
 import HistoryItem from "~/components/HistoryItem";
 import AccountItem from "~/components/AccountItem";
@@ -22,9 +23,12 @@ function Search() {
 
   // search history
   const [cookies, setCookie] = useCookies(["searchHistory"]);
-  const [searchHistory, setSearchHistory] = useState(
-    cookies.searchHistory ? cookies.searchHistory.split(",") : []
-  );
+  const [searchHistory, setSearchHistory] = useState(() => {
+    const history = cookies.searchHistory;
+    return typeof history === "string" ? history.split(",") : [];
+  });
+
+  const axiosInstance = useAxiosWithInterceptor();
 
   const debounce = useDebounce(searchValue, 500);
 
@@ -38,17 +42,17 @@ function Search() {
     const fetchApi = async () => {
       setLoading(true);
 
-      const result = await searchService.search(debounce);
+      const result = await searchService.search(axiosInstance, debounce);
       setSearchResult(result);
 
       setLoading(false);
     };
     fetchApi();
-  }, [debounce]);
+  }, [debounce]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setCookie("searchHistory", searchHistory.join(","), { path: "/" });
-  }, [searchHistory, setCookie]);
+  }, [searchHistory, setCookie]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClear = () => {
     setSearchValue("");
@@ -102,27 +106,35 @@ function Search() {
       visible={showResult && (showResult || searchResult.length > 0)}
       interactive
       render={(attrs) => (
-        <ul className={cx("search-result")} tabIndex="-1" {...attrs}>
-          {searchHistory.length > 0 && (
-            <div className={cx("search-result__header")}>Tìm kiếm gần đây</div>
-          )}
-          {searchHistory.map((history) => (
-            <HistoryItem key={history} onRemove={handleRemoveHistory}>
-              {history}
-            </HistoryItem>
-          ))}
+        <div>
+          <ul className={cx("search-result")} tabIndex="-1" {...attrs}>
+            {searchHistory.length > 0 && (
+              <div className={cx("search-result__header")}>
+                Tìm kiếm gần đây
+              </div>
+            )}
+            {searchHistory?.map((history, index) => (
+              <HistoryItem
+                key={`${history}-${index}`} // <-- Sử dụng index để đảm bảo key là duy nhất
+                setSearchValue={setSearchValue}
+                onRemove={handleRemoveHistory}
+              >
+                {history}
+              </HistoryItem>
+            ))}
 
-          {searchResult.length > 0 && (
-            <div className={cx("search-result__header")}>Tài khoản</div>
-          )}
-          {searchResult.map((result) => (
-            <AccountItem
-              key={result.id}
-              data={result}
-              onClick={() => handleAccountClick(result.nickname)}
-            />
-          ))}
-        </ul>
+            {searchResult.length > 0 && (
+              <div className={cx("search-result__header")}>Tài khoản</div>
+            )}
+            {searchResult.map((result, index) => (
+              <AccountItem
+                key={result.id || `result-${index}`} // Dùng index nếu id không tồn tại
+                data={result}
+                onClick={() => handleAccountClick(result.nickname)}
+              />
+            ))}
+          </ul>
+        </div>
       )}
       onClickOutside={handleHideResult}
     >

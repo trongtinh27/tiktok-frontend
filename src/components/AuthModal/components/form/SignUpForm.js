@@ -121,7 +121,7 @@ function SignUpForm() {
   const axiosInstance = useAxiosWithInterceptor();
 
   // Cookies
-  const [, setCookie] = useCookies(["token"]);
+  const [, setCookie] = useCookies(["token", "tiktok-jwt-refresh"]);
   // State form
   const [signupWithEmail, setSignpWithEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -187,9 +187,9 @@ function SignUpForm() {
       // Manually format the date as YYYY-MM-DD
       const formattedDate =
         date.getFullYear() +
-        "-" +
+        "/" +
         String(date.getMonth() + 1).padStart(2, "0") +
-        "-" + // Month needs to be 1-indexed again
+        "/" + // Month needs to be 1-indexed again
         String(date.getDate()).padStart(2, "0");
 
       // Set the formatted date
@@ -210,29 +210,45 @@ function SignUpForm() {
   // Handle register
   const handleRegister = async () => {
     setIsLoading(true);
-    const res = await authService.registerApi(
-      axiosInstance,
-      signupWithEmail,
-      birthday,
-      signupWithEmail ? inputEmail : inputPhone,
-      inputPassword
-    );
-    if (res.status === 200) {
-      setIsLoading(false);
+    try {
+      const res = await authService.registerApi(
+        axiosInstance,
+        signupWithEmail,
+        birthday,
+        signupWithEmail ? inputEmail : inputPhone,
+        inputPassword
+      );
+      if (res.status === 200) {
+        setIsLoading(false);
+        const result = res.data;
 
-      const data = res.data;
-      setCookie("token", data.token, {
-        path: "/",
-        maxAge: data.tokenExpiration / 1000,
-      });
-    } else if (res.response.status === 400) {
+        if (result.data.status === 400) {
+          setIsLoading(false);
+          setError(true);
+          setErrorMessage(result.data.message);
+        } else if (result.status === 200) {
+          const {
+            token,
+            refreshToken,
+            tokenExpiration,
+            refreshTokenExpiration,
+          } = res.data.data;
+          // console.log(data);
+          // Lưu Access Token và Refresh Token
+          setCookie("token", token, {
+            path: "/",
+            maxAge: tokenExpiration / 1000, // Đổi từ ms sang giây
+          });
+          setCookie("tiktok-jwt-refresh", refreshToken, {
+            path: "/",
+            maxAge: refreshTokenExpiration / 1000,
+          });
+        }
+      }
+    } catch (error) {
       setIsLoading(false);
-
-      const data = res.response;
       setError(true);
-      setErrorMessage(data.data);
-    } else {
-      setIsLoading(false);
+      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
     }
   };
 

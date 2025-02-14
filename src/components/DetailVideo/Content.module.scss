@@ -135,6 +135,32 @@
   background-clip: padding-box;
   height: 36px;
   padding-inline: 15px;
+
+  &:hover {
+    background-color: rgba(255, 75, 105, 1);
+    border-color: rgba(255, 75, 105, 1);
+  }
+}
+
+.btn-unfollow {
+  appearance: none;
+  min-width: 96px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  font-weight: 600;
+  text-decoration: none;
+  background-clip: padding-box;
+  height: 36px;
+  padding-inline: 15px;
+  color: var(--white-opacity-90);
+  background-color: var(--dark-gray);
+  border-color: var(--white-opacity-12);
+
+  &:hover {
+    background-color: rgba(46, 46, 46, 1);
+    border-color: var(--black-opacity-0);
+  }
 }
 
 .description {
@@ -342,4 +368,37 @@
   &.disable {
     color: rgba(255, 255, 255, 0.34);
   }
+}
+
+.videos-wrapper {
+  display: flex;
+}
+
+.videos-container {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgb(18, 18, 18);
+}
+
+.videos {
+  // padding-top: 20px;
+  width: 100%;
+  overflow: hidden auto;
+  position: relative;
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.video-item {
+  margin-right: 7.5px;
+  width: 160px;
+  height: 239px;
+  margin-bottom: 8px;
+  cursor: pointer;
 }

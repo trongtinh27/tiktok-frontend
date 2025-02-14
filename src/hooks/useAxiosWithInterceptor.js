@@ -8,96 +8,81 @@ const useAxiosWithInterceptor = () => {
     "tiktok-jwt-refresh",
   ]);
 
-  const httpRequest = useMemo(
-    () =>
-      axios.create({
-        baseURL: "http://localhost:8080/",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }),
-    []
-  );
+  const httpRequest = useMemo(() => {
+    return axios.create({
+      baseURL: "http://localhost:8080/",
+      headers: {
+        "Content-Type": "application/json",
+        "Refresh-token": cookies["tiktok-jwt-refresh"],
+      },
+      withCredentials: true,
+    });
+  }, [cookies["tiktok-jwt-refresh"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    // Thêm interceptor cho request
     const requestInterceptor = httpRequest.interceptors.request.use(
       (config) => {
         const accessToken = cookies.token;
+
         if (accessToken) {
-          config.headers["Authorization"] = `Bearer ${accessToken}`;
+          try {
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
+          } catch (error) {
+            Promise.reject(error);
+          }
         }
         return config;
       },
-      (error) => {
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
-    // Thêm interceptor cho response
     const responseInterceptor = httpRequest.interceptors.response.use(
-      (response) => {
-        return response;
-      },
+      (response) => response,
       async (error) => {
-        const originalRequest = error.config;
+        console.log(error);
 
-        // Kiểm tra lỗi 401 và xem đã thử refresh token chưa
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
           try {
-            // Gọi API refresh token
-            const response = await httpRequest.post("auth/refreshToken", {});
+            const response = await httpRequest.post(
+              "auth/refreshToken",
+              {},
+              {
+                headers: {
+                  "Refresh-token": cookies["tiktok-jwt-refresh"],
+                },
+              }
+            );
+
             if (response.status === 200) {
-              // Cập nhật lại token mới
-              setCookie("token", response.data.token, {
+              setCookie("token", response.data.data.token, {
                 path: "/",
-                maxAge: response.data.tokenExpiration / 1000,
+                maxAge: response.data.data.tokenExpiration / 1000,
               });
 
-              // Thêm token mới vào request ban đầu
               originalRequest.headers[
                 "Authorization"
-              ] = `Bearer ${response.data.token}`;
+              ] = `Bearer ${response.data.data.token}`;
 
-              // Gửi lại request với token mới
               return httpRequest(originalRequest);
             }
           } catch (refreshError) {
-            if (refreshError.response?.status === 401) {
-              // Nếu refresh token thất bại (401), thì logout
-              removeCookie("token", { path: "/" });
-              removeCookie("tiktok-jwt-refresh", { path: "/" });
-
-              // Trả về lỗi để thông báo cho người dùng
-              return Promise.reject(refreshError);
-            }
-            if (refreshError.response?.status === 400) {
-              removeCookie("token", { path: "/" });
-              removeCookie("tiktok-jwt-refresh", { path: "/" });
-
-              // Trả về lỗi để thông báo cho người dùng
-              return Promise.reject(refreshError);
-            }
-
-            // Nếu lỗi không phải 401, xử lý theo cách khác
+            removeCookie("token", { path: "/" });
+            removeCookie("tiktok-jwt-refresh", { path: "/" });
             return Promise.reject(refreshError);
           }
         }
-
-        // Nếu không phải lỗi 401 hoặc đã thử refresh token rồi
         return Promise.reject(error);
       }
     );
 
-    // Cleanup interceptors khi component unmount
     return () => {
       httpRequest.interceptors.request.eject(requestInterceptor);
       httpRequest.interceptors.response.eject(responseInterceptor);
     };
-  }, [cookies.token, httpRequest, removeCookie, setCookie]);
+  }, [cookies, httpRequest, removeCookie, setCookie]); // eslint-disable-next-line
 
   return httpRequest;
 };

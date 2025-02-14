@@ -8,29 +8,35 @@ import styles from "./MessageItem.module.scss";
 const cx = classNames.bind(styles);
 function MessageItem({
   data,
+  disconnect,
   connect,
   axiosInstance,
   user,
   setRoomId,
   setReceiverId,
 }) {
-  const createChatRoom = () => {
-    const callApi = async () => {
-      try {
-        const fetchApi = await chatService.createChatRoomApi(
-          axiosInstance,
-          user.id,
-          data?.id
-        );
+  const createChatRoom = async () => {
+    try {
+      // Ngắt kết nối khỏi phòng cũ trước khi chuyển sang phòng mới
+      await disconnect();
 
-        if (fetchApi.status === 200) {
-          setRoomId(fetchApi.data);
-        }
-      } catch (error) {}
-    };
-    callApi();
-    connect();
-    setReceiverId(data?.id);
+      const fetchApi = await chatService.createChatRoomApi(
+        axiosInstance,
+        user.id,
+        data?.id
+      );
+
+      if (fetchApi.data.status === 200) {
+        setRoomId(fetchApi.data.data); // Cập nhật roomId mới
+
+        console.log("room lay được 1: ", fetchApi.data.data);
+        connect(); // Kết nối lại WebSocket
+
+        setReceiverId(data?.id);
+      }
+    } catch (error) {
+      console.error("Error creating chat room:", error);
+    }
   };
 
   return (

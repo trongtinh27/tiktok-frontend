@@ -18,7 +18,7 @@ export function UserProvider({ children }) {
     "token",
     "tiktok-jwt-refresh",
   ]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const token = cookies.token;
 
@@ -31,14 +31,26 @@ export function UserProvider({ children }) {
     setIsLoggedIn(false);
   }, []);
 
-  const logout = useCallback(async () => {
-    const logoutFetch = await authService.logoutApi(axiosInstance);
+  // const logout =
+  //   useCallback(async () => {
+  //     const logoutFetch = await authService.logoutApi(axiosInstance, userId);
+
+  //     if (logoutFetch?.status === 200) {
+  //       clearUser();
+  //       removeCookie("token", { path: "/" });
+  //       removeCookie("tiktok-jwt-refresh", { path: "/" });
+  //     }
+  //   }, [clearUser, removeCookie, setCookie]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const logout = async (userId) => {
+    const logoutFetch = await authService.logoutApi(axiosInstance, userId);
+
     if (logoutFetch?.status === 200) {
       clearUser();
       removeCookie("token", { path: "/" });
       removeCookie("tiktok-jwt-refresh", { path: "/" });
     }
-  }, [clearUser, removeCookie, setCookie]); // eslint-disable-line react-hooks/exhaustive-deps
+  };
 
   useEffect(() => {
     const loadProfile = async (accessToken) => {
@@ -47,8 +59,10 @@ export function UserProvider({ children }) {
           axiosInstance,
           accessToken
         );
+
         if (userInfo.status === 200) {
-          setUser(userInfo.data);
+          updateUser(userInfo.data);
+
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
@@ -59,8 +73,8 @@ export function UserProvider({ children }) {
       }
     };
 
-    loadProfile(token);
-  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
+    loadProfile(cookies["tiktok-jwt-refresh"]);
+  }, [token, cookies["tiktok-jwt-refresh"], axiosInstance]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <UserContext.Provider

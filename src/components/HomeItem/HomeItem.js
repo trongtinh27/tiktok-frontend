@@ -5,6 +5,8 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { Link } from "react-router-dom";
 
+import * as videoService from "~/services/videoService";
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import Image from "~/components/Image";
 import {
   MuteIcon,
@@ -18,11 +20,12 @@ import ActionItem from "./ActionItem";
 
 const cx = classNames.bind(styles);
 
-function HomeItem({ shape, video }) {
+function HomeItem({ shape, video, setPage, isLast }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
   const [isFirstVideo, setIsFirstVideo] = useState(true); // Trạng thái để theo dõi video đầu tiên
+  const axiosInstance = useAxiosWithInterceptor();
 
   // Volume
   const [isMute, setIsMute] = useState(false);
@@ -60,6 +63,15 @@ function HomeItem({ shape, video }) {
     }
   }, [updateProgress]);
 
+  const addView = async () => {
+    try {
+      const res = await videoService.addView(axiosInstance, video?.id);
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -76,9 +88,15 @@ function HomeItem({ shape, video }) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               // Video nằm trong vùng nhìn thấy
+              console.log("videoRef, ", videoRef.current.dataset.id);
+              addView();
               videoRef.current.muted = isMute;
               videoRef.current.play().catch((error) => {});
               drawVideoOnCanvas();
+
+              if (isLast) {
+                setPage((prevPage) => prevPage + 1);
+              }
             } else {
               // Video ra khỏi vùng nhìn thấy
               if (isPlaying) {
@@ -88,7 +106,7 @@ function HomeItem({ shape, video }) {
           });
         },
         {
-          threshold: 0.8, // 50% của phần tử phải xuất hiện trong vùng nhìn thấy để kích hoạt callback
+          threshold: 0.8, // 80% của phần tử phải xuất hiện trong vùng nhìn thấy để kích hoạt callback
         }
       );
 
@@ -106,7 +124,7 @@ function HomeItem({ shape, video }) {
       videoRef.current.pause();
       return;
     }
-  }, [isMute, isPlaying, drawVideoOnCanvas]);
+  }, [isMute, isPlaying, drawVideoOnCanvas]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePlayVideo = () => {
     if (videoRef.current) {
@@ -178,6 +196,7 @@ function HomeItem({ shape, video }) {
                 <div className={cx("basic-media")}>
                   <div className={cx("web-media")}>
                     <video
+                      data-id={video?.id}
                       ref={videoRef}
                       crossOrigin="anonymous"
                       loop

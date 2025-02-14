@@ -32,12 +32,12 @@ const cx = classNames.bind(styles);
 
 function ActionItem({ video }) {
   const checkLogin = useCheckLogin();
-  // state
-  const [follow, setFollow] = useState(video?.followStatus);
-  const [likeVideo, setLikeVideo] = useState(video?.likeStatus);
-  const [likeCount, setLikeCount] = useState(video?.likeCount);
-  const [collectVideo, setCollectVideo] = useState(video?.collectStatus);
-  const [collectCount, setCollectCount] = useState(video?.collectCount);
+
+  const [follow, setFollow] = useState(false);
+  const [likeVideo, setLikeVideo] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [collectVideo, setCollectVideo] = useState(false);
+  const [collectCount, setCollectCount] = useState(0);
   // axiosInstance
   const axiosInstance = useAxiosWithInterceptor();
 
@@ -50,15 +50,14 @@ function ActionItem({ video }) {
         followerId: video.userId,
         followedId: user.id,
       };
-      const callAddFollowApi = await followService.addFollow(
+      const callToggleFollowApi = await followService.toggleFollow(
         axiosInstance,
         followRequest
       );
 
-      if (callAddFollowApi.status === 200) {
-        setFollow(callAddFollowApi.data.followStatus);
+      if (callToggleFollowApi.status === 200) {
+        setFollow(callToggleFollowApi.data.following);
       }
-      // setFollow((prevState) => !prevState);
     });
   };
 
@@ -100,14 +99,15 @@ function ActionItem({ video }) {
     });
   };
 
-  useEffect(() => {}, [
-    likeCount,
-    likeVideo,
-    collectCount,
-    collectVideo,
-    follow,
-  ]);
-
+  useEffect(() => {
+    if (video) {
+      setFollow(video.followStatus);
+      setLikeVideo(video.likeStatus);
+      setLikeCount(video.likeCount);
+      setCollectVideo(video.collectStatus);
+      setCollectCount(video.collectCount);
+    }
+  }, [video]);
   return (
     <div className={cx("action-item-container")}>
       <div className={cx("avatar-item")}>
@@ -136,10 +136,12 @@ function ActionItem({ video }) {
         <strong className={cx("text")}>{likeCount}</strong>
       </button>
       <button className={cx("button-item")}>
-        <span role="button" className={cx("icon-wrapper")}>
-          <CommentIcon />
-        </span>
-        <strong className={cx("text")}>{video.commentCount}</strong>
+        <Link to={"/" + video.username + "/video/" + video.id}>
+          <span role="button" className={cx("icon-wrapper")}>
+            <CommentIcon />
+          </span>
+          <strong className={cx("text")}>{video.commentCount}</strong>
+        </Link>
       </button>
       <button className={cx("button-item")}>
         <span
@@ -164,42 +166,42 @@ function ActionItem({ video }) {
               >
                 <BottomArrowIcon className={cx("share-tippy-icon")} />
                 <div className={cx("share-wrapper")}>
-                  <a href="/" className={cx("share-link")}>
+                  <Link href="#" className={cx("share-link")}>
                     <span className={cx("share-link-icon")}>
                       <RePostIcon />
                     </span>
                     <span className={cx("share-link-title")}>Đăng lại</span>
-                  </a>
-                  <a href="/" className={cx("share-link")}>
+                  </Link>
+                  <Link href="#" className={cx("share-link")}>
                     <span className={cx("share-link-icon")}>
                       <EmbedIcon />
                     </span>
                     <span className={cx("share-link-title")}>Nhúng</span>
-                  </a>
-                  <a href="/" className={cx("share-link")}>
+                  </Link>
+                  <Link href="#" className={cx("share-link")}>
                     <span className={cx("share-link-icon")}>
                       <ShareFriendIcon />
                     </span>
                     <span className={cx("share-link-title")}>
                       Gửi đến bạn bè
                     </span>
-                  </a>
-                  <a href="/" className={cx("share-link")}>
+                  </Link>
+                  <Link href="#" className={cx("share-link")}>
                     <span className={cx("share-link-icon")}>
                       <FacebookIcon />
                     </span>
                     <span className={cx("share-link-title")}>
                       Chia sẻ với Facebook
                     </span>
-                  </a>
-                  <a href="/" className={cx("share-link")}>
+                  </Link>
+                  <Link href="#" className={cx("share-link")}>
                     <span className={cx("share-link-icon")}>
                       <LinkIcon />
                     </span>
                     <span className={cx("share-link-title")}>
                       Sao chép liên kết
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             )}
@@ -209,7 +211,7 @@ function ActionItem({ video }) {
             </span>
           </HeadlessTippy>
         </div>
-        <strong className={cx("text")}>1234</strong>
+        <strong className={cx("text")}></strong>
       </button>
       <button className={cx("button-item")}>
         <span role="button" className={cx("icon-wrapper")}>

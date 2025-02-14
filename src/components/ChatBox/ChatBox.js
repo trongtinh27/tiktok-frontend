@@ -78,8 +78,18 @@ function ChatBox({
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Ngăn chặn xuống dòng trong input
+      send(); // Gọi hàm gửi bình luận
+    }
+  };
+
   useEffect(() => {
     if (axiosInstance && user && receiverId) {
+      setMessageInput("");
+      setMessages([]);
+      setVisibleListEmoji(false);
       const getChatBox = async () => {
         const fetch = await chatService.getChatBoxApi(
           axiosInstance,
@@ -88,7 +98,7 @@ function ChatBox({
           0,
           10
         );
-
+        console.log("fetch", fetch);
         if (fetch !== undefined && fetch.status === 200) {
           setChatBox(fetch.data);
           setMessages(fetch.data.listMessage);
@@ -124,12 +134,12 @@ function ChatBox({
           </div>
           <div className={cx("chat-center")}>
             <div className={cx("container")}>
-              {messages?.map((message) => (
+              {messages.map((message) => (
                 <ChatItem key={message.id} data={message} />
               ))}
             </div>
           </div>
-          <div className={cx("chat-bottom")}>
+          <div onKeyDown={handleKeyDown} className={cx("chat-bottom")}>
             <div className={cx("chat-input-container")}>
               <input
                 type="text"

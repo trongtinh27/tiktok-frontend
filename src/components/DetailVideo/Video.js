@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import HeadlessTippy from "@tippyjs/react/headless";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { Link } from "react-router-dom";
 
 import Image from "~/components/Image";
 import {

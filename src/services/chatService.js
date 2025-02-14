@@ -4,9 +4,11 @@ export const createChatRoomApi = async (
   receiverId
 ) => {
   try {
-    const res = await axiosInstance.post(
-      `messages/create-chat-room?userOneId=${senderId}&userTwoId=${receiverId}`
-    );
+    const res = await axiosInstance.post(`messages/create-chat-room`, {
+      userOneId: senderId,
+      userTwoId: receiverId,
+    });
+    console.log("res", res);
     return res;
   } catch (error) {
     return error;

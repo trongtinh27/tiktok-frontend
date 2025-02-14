@@ -5,12 +5,14 @@ import Image from "~/components/Image";
 import { useUser } from "~/contexts/UserContext";
 import styles from "./ChatItem.module.scss";
 import { useEffect, useState } from "react";
+import Tippy from "@tippyjs/react";
 
 const cx = classNames.bind(styles);
 
 function ChatItem({ data }) {
   const { user } = useUser();
-  const [isSender, setIsSender] = useState(data?.sender.id === user.id);
+
+  let isSender = data?.sender?.id === user.id; // Tính toán trực tiếp mỗi khi Render
 
   const formatDate = (dateInput) => {
     // Chuyển đổi chuỗi thành đối tượng Date
@@ -43,33 +45,29 @@ function ChatItem({ data }) {
     return `${day} ${month} ${year} ${hours}:${minutes}`;
   };
 
-  useEffect(() => {
-    setIsSender(data?.sender.id === user.id);
-  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <>
-      <div className={cx("time-container")}>
-        <span>{formatDate(data?.created)}</span>
-      </div>
       <div className={cx("wrapper")}>
         <div className={cx("container", isSender ? "isSender" : "isReceiver")}>
           <Link to="@/admin">
             <span className={cx("avatar-container")}>
-              <Image
-                className={cx("avatar")}
-                src={isSender ? data?.sender.avatar : data?.receiver.avatar}
-              />
+              <Image className={cx("avatar")} src={data?.sender?.avatar} />
             </span>
           </Link>
-          <div
-            className={cx(
-              "text-container",
-              isSender ? "text-Sender" : "text-Receiver"
-            )}
+          <Tippy
+            delay={[0, 200]}
+            content={formatDate(data?.created)}
+            placement={isSender ? "left" : "right"}
           >
-            <p className={cx("chat-content")}>{data?.content}</p>
-          </div>
+            <div
+              className={cx(
+                "text-container",
+                isSender ? "text-Sender" : "text-Receiver"
+              )}
+            >
+              <p className={cx("chat-content")}>{data?.content}</p>
+            </div>
+          </Tippy>
         </div>
       </div>
     </>

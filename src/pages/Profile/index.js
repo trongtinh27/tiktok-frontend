@@ -38,17 +38,18 @@ function Profile() {
               resAuth.data.id,
               user.id
             );
-            const checkFollow = resFollow.data;
-
-            if (checkFollow.mutualFollowing) {
-              setUserStatus("mutualFollowing");
-            } else if (checkFollow.following) {
-              setUserStatus("following");
+            if (resFollow.status === 200) {
+              const checkFollow = resFollow.data;
+              if (checkFollow.mutualFollowing) {
+                setUserStatus("mutualFollowing");
+              } else if (checkFollow.following) {
+                setUserStatus("following");
+              } else {
+                setUserStatus("unfollow");
+              }
             } else {
               setUserStatus("unfollow");
             }
-          } else {
-            setUserStatus("unfollow");
           }
         } catch (error) {
           console.error("Error loading profile:", error);
@@ -73,8 +74,8 @@ function Profile() {
         <div className={cx("center")}>
           {userInfo ? (
             <>
-              <User user={userInfo} userStatus={userStatus} />
-              <Videos />
+              <User profile={userInfo} userStatus={userStatus} />
+              <Videos username={username} />
             </>
           ) : (
             <p>Loading...</p> // Hiển thị loading trong khi đợi dữ liệu

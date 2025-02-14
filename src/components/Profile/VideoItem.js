@@ -3,12 +3,11 @@ import { useRef, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { PlayIcon } from "~/components/Icons";
-import images from "~/assets/images";
 import styles from "./User.module.scss";
 
 const cx = classNames.bind(styles);
 
-function VideoItem() {
+function VideoItem({ className = "", videoData }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
@@ -59,7 +58,7 @@ function VideoItem() {
   return (
     <div
       ref={containerRef}
-      className={cx("video-item-wrapper")}
+      className={cx("video-item-wrapper", className)}
       role="button"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -67,7 +66,11 @@ function VideoItem() {
       <div className={cx("video-item-container")}>
         <div className={cx("video-item-content")}>
           <div className={cx("wrapper")}>
-            <Link to="" className={cx("media-card")}>
+            <Link
+              target="_blank"
+              to={"/" + videoData.username + "/video/" + videoData.id}
+              className={cx("media-card")}
+            >
               <canvas ref={canvasRef} className={cx("canvas")} />
               <div className={cx("video-player")}>
                 <div className={cx("basic-media")}>
@@ -79,13 +82,13 @@ function VideoItem() {
                       playsInline
                       preload="auto"
                       muted={true}
-                      src={images.videoTest}
+                      src={videoData?.videoUrl}
                     />
                   </div>
                 </div>
                 <div className={cx("card-footer")}>
                   <PlayIcon />
-                  <strong>3008</strong>
+                  <strong>{videoData?.likeCount}</strong>
                 </div>
               </div>
             </Link>
@@ -94,7 +97,7 @@ function VideoItem() {
       </div>
       <div className={cx("video-item-description")}>
         <div className={cx("description")}>
-          <span>description test</span>
+          <span>{videoData?.description}</span>
         </div>
       </div>
     </div>

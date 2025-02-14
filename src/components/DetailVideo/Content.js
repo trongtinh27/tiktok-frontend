@@ -3,8 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
-import { ImageIcon, EmojiIcon, MessageActiveIcon } from "~/components/Icons";
+import { EmojiIcon } from "~/components/Icons";
+import useCheckLogin from "~/hooks/useCheckLogin";
+import * as videoService from "~/services/videoService";
+import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
+import { VideoItem } from "~/components/Profile";
 import Emoji from "~/components/Emoji";
 import VideoAction from "./VideoAction";
 import images from "~/assets/images";
@@ -13,13 +19,26 @@ import Image from "~/components/Image";
 import Button from "~/components/Button";
 import CommentItem from "./CommentItem";
 import styled from "./Content.module.scss";
+import { useUser } from "~/contexts/UserContext";
+import * as followService from "~/services/followService";
+import * as commentService from "~/services/commentService";
 
 const cx = classNames.bind(styled);
-function Content({ video }) {
-  const [tabMenu, setTabMenu] = useState(true);
 
+let stompClient = null;
+
+function Content({ username, video }) {
+  const axiosInstance = useAxiosWithInterceptor();
+  const { user } = useUser();
+  const checkLogin = useCheckLogin();
+
+  const [tabMenu, setTabMenu] = useState(true);
   // CommentBox
   const [visibleListEmoji, setVisibleListEmoji] = useState(false);
+  const [videoList, setVideoList] = useState([]);
+  const [followStatus, setFollowStatus] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
   const [messageInput, setMessageInput] = useState("");
   const inputRef = useRef();
 
@@ -57,12 +76,149 @@ function Content({ video }) {
     }
   };
 
-  const send = () => {
-    if (messageInput) {
+  const loadVideo = async (username) => {
+    try {
+      const res = await videoService.getVideoByUser(axiosInstance, username);
+      if (res.status === 200) {
+        setVideoList(res.data);
+      }
+    } catch (error) {
+      console.error("Error loading videos:", error);
     }
   };
 
-  useEffect(() => {}, []);
+  const handleCheckFollow = async (userId, videoUserID) => {
+    const resFollow = await followService.checkFollowApi(
+      axiosInstance,
+      videoUserID,
+      userId
+    );
+
+    if (resFollow.status === 200) {
+      const checkFollow = resFollow.data;
+
+      if (checkFollow.following) {
+        setFollowStatus(true);
+      } else {
+        setFollowStatus(false);
+      }
+    }
+  };
+
+  const handleClickFollow = () => {
+    checkLogin(async () => {
+      const followRequest = {
+        followerId: video?.userId,
+        followedId: user.id,
+      };
+      const callToggleFollowApi = await followService.toggleFollow(
+        axiosInstance,
+        followRequest
+      );
+
+      if (callToggleFollowApi.status === 200) {
+        setFollowStatus(callToggleFollowApi.data.following ? true : false);
+      }
+    });
+  };
+
+  const getComments = async () => {
+    try {
+      const res = await commentService.getComments(axiosInstance, video?.id);
+      console.log("res", res);
+
+      if (res.status === 200) {
+        setComments(res.data);
+      }
+    } catch (error) {
+      console.error("Error loading comments:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (username) {
+      loadVideo(username);
+    }
+    if (video?.id) {
+      getComments();
+    }
+    if (
+      user?.id &&
+      user !== undefined &&
+      video?.userId &&
+      video !== undefined
+    ) {
+      handleCheckFollow(user?.id, video?.userId);
+    }
+  }, [video, username, user, followStatus]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (video) {
+      const socket = new SockJS("http://localhost:8080/ws"); // Đổi URL nếu cần
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, onConnected, onError);
+
+      return () => {
+        if (stompClient) {
+          stompClient.disconnect();
+        }
+      };
+    }
+  }, [video]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onMessageReceived = (message) => {
+    const newComment = JSON.parse(message.body);
+    setComments((prev) => [...prev, newComment]);
+    setCommentCount((prev) => prev + 1);
+  };
+
+  const onConnected = () => {
+    // Subscribe để nhận bình luận theo videoId
+    stompClient.subscribe(`/topic/comments/${video?.id}`, onMessageReceived);
+  };
+
+  const onError = (error) => {
+    console.error("WebSocket error:", error);
+  };
+
+  const send = () => {
+    checkLogin(async () => {
+      if (messageInput) {
+        const newComment = {
+          videoId: video?.id,
+          userId: user?.id,
+          content: messageInput,
+        };
+
+        try {
+          await axiosInstance.post(
+            "http://localhost:8080/comments/post",
+            newComment
+          );
+
+          // Gửi bình luận qua WebSocket ngay lập tức
+          if (stompClient && stompClient.connected) {
+            stompClient.send(
+              `/app/comments/${video?.id}`,
+              {},
+              JSON.stringify(newComment)
+            );
+          }
+
+          setMessageInput(""); // Xóa input sau khi gửi
+        } catch (error) {
+          console.error("Lỗi gửi comment:", error);
+        }
+      }
+    });
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Ngăn chặn xuống dòng trong input
+      send(); // Gọi hàm gửi bình luận
+    }
+  };
 
   return (
     <>
@@ -71,44 +227,61 @@ function Content({ video }) {
           <div className={cx("profile-wrapper")}>
             <div className={cx("profile")}>
               <div className={cx("info")}>
-                <Link to={"/@admin"} className={cx("avt-link")}>
+                <Link to={"/@" + video?.username} className={cx("avt-link")}>
                   <div className={cx("avt-container")}>
                     <span className={cx("avatar")}>
                       <Image
                         className={cx("img-avt")}
-                        src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/048641c5a210f6b662ae2db0e1821667.jpeg?lk3s=a5d48078&nonce=42121&refresh_token=c799674b99b18d443e1029fed9936797&x-expires=1731823200&x-signature=AQppVkkXfxyidF1SvrzN5NGCZ4k%3D&shp=a5d48078&shcp=81f88b70"
+                        src={video?.userAvatar}
                         fallback="https://via.placeholder.com/56x100"
                       />
                     </span>
                   </div>
                 </Link>
-                <Link to={"/@admin"} className={cx("username-link")}>
+                <Link
+                  to={"/@" + video?.username}
+                  className={cx("username-link")}
+                >
                   <span className={cx("username-container")}>
-                    <span className={cx("username-content")}>suxinhgai</span>
+                    <span className={cx("username-content")}>
+                      {video?.username}
+                    </span>
                   </span>
                   <br />
                   <span className={cx("displayName-container")}>
                     <span className={cx("displayName-content")}>
-                      hai một cún
+                      {video?.displayName}
                     </span>
                   </span>
                 </Link>
                 <div className={cx("btn-wrapper")}>
-                  <Button className={cx("btn-follow")} primary>
-                    Follow
-                  </Button>
+                  {video?.userId !== user?.id &&
+                    (followStatus ? (
+                      <Button
+                        onClick={handleClickFollow}
+                        className={cx("btn-unfollow")}
+                      >
+                        Hủy Follow
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleClickFollow}
+                        className={cx("btn-follow")}
+                        primary
+                      >
+                        Follow
+                      </Button>
+                    ))}
                 </div>
               </div>
               <div className={cx("description")}>
                 <div className={cx("wrapper")}>
-                  <span className={cx("desc-text")}>Test description 🥹💗 </span>
+                  <span className={cx("desc-text")}>{video?.description}</span>
                 </div>
                 <h4 className={cx("browse-music")}>
                   <Link to="#" className={cx("music-link")}>
                     <MusicIcon className={cx("music-icon")} />
-                    <div className={cx("music-text")}>
-                      2024-03-05 21-24-07.mp4
-                    </div>
+                    <div className={cx("music-text")}>{video?.description}</div>
                   </Link>
                 </h4>
                 <div className={cx("tag-wrapper")}>
@@ -131,7 +304,11 @@ function Content({ video }) {
               </div>
             </div>
             <div className={cx("tab-profile")}>
-              <VideoAction></VideoAction>
+              <VideoAction
+                video={video}
+                commentCount={commentCount}
+                setCommentCount={setCommentCount}
+              ></VideoAction>
             </div>
           </div>
           <div className={cx("menu-wrapper")}>
@@ -142,7 +319,9 @@ function Content({ video }) {
                   active: tabMenu, // Nếu tabMenu là true, thì sẽ thêm class 'active'
                 })}
               >
-                <div className={cx("tab-item")}>Bình luận 14</div>
+                <div
+                  className={cx("tab-item")}
+                >{`Bình luận ${commentCount}`}</div>
               </div>
               <div
                 onClick={() => handleChangeTab(false)}
@@ -157,21 +336,30 @@ function Content({ video }) {
           </div>
           <div className={cx("back-btn")}></div>
           {tabMenu ? (
-            <>
-              <CommentItem />
-              <CommentItem />
-              <CommentItem />
-              <CommentItem />
-              <CommentItem />
-            </>
+            comments.map((comment, index) => (
+              <CommentItem key={index} comment={comment} />
+            ))
           ) : (
             <>
-              <h1>Video của nhà sáng tạo</h1>
+              {/* <h1>Video của nhà sáng tạo</h1> */}
+              <div className={cx("videos-wrapper")}>
+                <div className={cx("videos-container")}>
+                  <div className={cx("videos")}>
+                    {videoList?.map((video) => (
+                      <VideoItem
+                        className={cx("video-item")}
+                        key={video.id}
+                        videoData={video}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>
       </div>
-      <div className={cx("comment-btn-container")}>
+      <div onKeyDown={handleKeyDown} className={cx("comment-btn-container")}>
         <div className={cx("input-container")}>
           <input
             type="text"

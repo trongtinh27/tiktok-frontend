@@ -8,7 +8,7 @@ const routes = {
   search: "/search",
   live: "/live",
   messages: "/messages",
-  detail: "/:username/video/:video",
+  detail: "/:username/video/:videoId",
 };
 
 export default routes;

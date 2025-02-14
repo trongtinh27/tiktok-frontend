@@ -19,19 +19,22 @@ import Tippy from "@tippyjs/react";
 import { useUser } from "~/contexts/UserContext";
 import useAxiosWithInterceptor from "~/hooks/useAxiosWithInterceptor";
 import * as videoService from "~/services/videoService";
-import * as followService from "~/services/followService";
 import useCheckLogin from "~/hooks/useCheckLogin";
 import Button from "~/components/Button";
 
 const cx = classNames.bind(styles);
 
-function VideoAction({ video }) {
+function VideoAction({ video, commentCount, setCommentCount }) {
   const checkLogin = useCheckLogin();
 
-  const [likeVideo, setLikeVideo] = useState(video?.likeStatus);
-  const [likeCount, setLikeCount] = useState(video?.likeCount || 0);
-  const [collectVideo, setCollectVideo] = useState(video?.collectStatus);
-  const [collectCount, setCollectCount] = useState(video?.collectCount || 0);
+  // if (!video) {
+  //   return <div>Loading...</div>; // Hoặc một UI loading
+  // }
+
+  const [likeVideo, setLikeVideo] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [collectVideo, setCollectVideo] = useState(false);
+  const [collectCount, setCollectCount] = useState(0);
 
   // axiosInstance
   const axiosInstance = useAxiosWithInterceptor();
@@ -79,36 +82,38 @@ function VideoAction({ video }) {
     });
   };
 
-  useEffect(() => {}, [likeCount, likeVideo, collectCount, collectVideo]);
+  // Đồng bộ dữ liệu khi `video` thay đổi
+  useEffect(() => {
+    if (video) {
+      setLikeVideo(video.likeStatus);
+      setLikeCount(video.likeCount);
+      setCommentCount(video.commentCount);
+      setCollectVideo(video.collectStatus);
+      setCollectCount(video.collectCount);
+    }
+  }, [video]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <div className={cx("container")}>
         <div className={cx("action-wrapper")}>
           <div className={cx("action-flex", "first")}>
             {/* Like */}
-            <button
-              role="button"
-              className={cx("btn-action-item")}
-              onClick={handleLike}
-            >
+            <button className={cx("btn-action-item")} onClick={handleLike}>
               <span className={cx("icon")}>
                 {likeVideo ? <HeartIconActive /> : <HeartIcon />}
               </span>
               <strong className={cx("text")}>{likeCount}</strong>
             </button>
             {/* Comment */}
-            <button disabled role="button" className={cx("btn-action-item")}>
+            <button disabled className={cx("btn-action-item")}>
               <span className={cx("icon")}>
                 <CommentIcon />
               </span>
-              <strong className={cx("text")}>0</strong>
+              <strong className={cx("text")}>{commentCount}</strong>
             </button>
             {/* Collect */}
-            <button
-              role="button"
-              className={cx("btn-action-item")}
-              onClick={handleCollect}
-            >
+            <button className={cx("btn-action-item")} onClick={handleCollect}>
               <span className={cx("icon")}>
                 {collectVideo ? <CollectIcon /> : <UnCollectIcon />}
               </span>
@@ -167,9 +172,7 @@ function VideoAction({ video }) {
           </div>
         </div>
         <div className={cx("copy-link")}>
-          <p className={cx("link-text")}>
-            https://www.tiktok.com/@dc.3001/video/7444790656029019410?is_from_webapp=1&sender_device=pc&web_id=7403227186863572487
-          </p>
+          <p className={cx("link-text")}>{window.location + ""}</p>
           <Button className={cx("btn-copy")}>Sao chép liên kết</Button>
         </div>
       </div>

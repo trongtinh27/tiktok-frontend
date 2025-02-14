@@ -72,22 +72,10 @@ function LoginForm() {
         );
       }
 
-      if (dataLogin.status === 200) {
-        // Lưu Access token
-        setCookie("token", dataLogin.data.token, {
-          path: "/",
-          maxAge: dataLogin.data.tokenExpiration / 1000,
-        });
-      } else {
-        setError(true);
-        setErrorMessage("Thông tin không chính xác");
-      }
-    } catch (error) {
-      console.log(error);
-      if (error.response?.status === 409) {
-        if (window.confirm(error.response.data.message)) {
-          console.log(error.response.data.message);
+      console.log("dataLogin", dataLogin.data.status);
 
+      if (dataLogin.data.data.status === 409) {
+        if (window.confirm(dataLogin.data.data.message)) {
           if (loginWithEmail) {
             dataLogin = await authService.confirmLoginApi(
               axiosInstance,
@@ -101,22 +89,41 @@ function LoginForm() {
               inputPassword
             );
           }
-
-          if (dataLogin.status === 200) {
-            // Lưu Access token
-            setCookie("token", dataLogin.data.token, {
-              path: "/",
-              maxAge: dataLogin.data.tokenExpiration / 1000,
-            });
-          } else {
-            setError(true);
-            setErrorMessage("Thông tin không chính xác");
-          }
         }
       }
+      if (dataLogin.status === 200) {
+        const { token, refreshToken, tokenExpiration, refreshTokenExpiration } =
+          dataLogin.data.data;
+        setCookie("token", token, {
+          path: "/",
+          maxAge: tokenExpiration / 1000,
+        });
+        setCookie("tiktok-jwt-refresh", refreshToken, {
+          path: "/",
+          maxAge: refreshTokenExpiration / 1000,
+        });
+      } else {
+        setError(true);
+        setErrorMessage("Thông tin không chính xác");
+      }
 
+      if (dataLogin.data.data.status === 200) {
+        const { token, refreshToken, tokenExpiration, refreshTokenExpiration } =
+          dataLogin.data.data;
+
+        // Lưu Access Token và Refresh Token
+        setCookie("token", token, {
+          path: "/",
+          maxAge: tokenExpiration / 1000, // Đổi từ ms sang giây
+        });
+        setCookie("tiktok-jwt-refresh", refreshToken, {
+          path: "/",
+          maxAge: refreshTokenExpiration / 1000,
+        });
+      }
+    } catch (error) {
       setError(true);
-      setErrorMessage(error.response?.data?.message);
+      setErrorMessage("Thông tin không chính xác");
     } finally {
       setIsLoading(false);
       setIsDisable(false);

@@ -154,15 +154,15 @@ function AuthModal() {
               <div className={cx("footer-text")}>
                 {isLogin ? "Bạn không có tài khoản?" : "Bạn đã có tài khoản?"}
               </div>
-              <Link
-                to={""}
+              <p
+                role="button"
                 className={cx("footer-link")}
                 onClick={handleChangeAuth}
               >
                 <span className={cx("link-title")}>
                   {isLogin ? "Đăng ký" : "Đăng nhập"}
                 </span>
-              </Link>
+              </p>
             </div>
           </div>
           <div className={cx("close-wrapper")} onClick={handleCloseModal}>

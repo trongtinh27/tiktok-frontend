@@ -33,12 +33,41 @@ function FollowModal({ userInfo, tab, isOpen, onClose }) {
   useEffect(() => {
     if (isOpen) {
       if (tabState === "following") {
+        setListFollow([]); // Reset lại danh sách
         const getListFollowing = async () => {
           try {
             const res = await followService.getListFollowingApi(
               axiosInstance,
               userInfo?.id,
-              token,
+              offset,
+              limit
+            );
+            if (res.status === 200) {
+              setListFollow((prev) => {
+                if (prev.length === 0) {
+                  return res.data;
+                } else {
+                  return [...prev, ...res.data];
+                }
+              });
+              if (res.data.length < limit) {
+                setHasMore(false); // Nếu dữ liệu trả về ít hơn limit, không còn dữ liệu nữa
+              }
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+
+        getListFollowing();
+      }
+      if (tabState === "follower") {
+        setListFollow([]); // Reset lại danh sách
+        const getListFollowing = async () => {
+          try {
+            const res = await followService.getListFollowerApi(
+              axiosInstance,
+              userInfo?.id,
               offset,
               limit
             );

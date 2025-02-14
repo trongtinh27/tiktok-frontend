@@ -26,7 +26,7 @@ function Menu({
 
   // const [, setCookie, removeCookie] = useCookies(["token"]);
 
-  const { logout } = useUser();
+  const { user, logout } = useUser();
 
   // const handleLogOut = () => {
   //   removeCookie(["token"]);
@@ -48,7 +48,7 @@ function Menu({
             if (isParent) {
               setHistoryMenu((prev) => [...prev, item.children]);
             } else if (item.logout) {
-              logout();
+              logout(user.id);
               return;
             } else {
               onChange(item);

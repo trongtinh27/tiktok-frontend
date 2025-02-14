@@ -11,19 +11,6 @@ export const loginApi = async (axiosInstance, account, password) => {
   }
 };
 
-export const comfirmLoginApi = async (axiosInstance, account, password) => {
-  try {
-    const res = await axiosInstance.post(`auth/confirmLogin`, {
-      account: account,
-      password: password,
-    });
-    return res;
-  } catch (error) {
-    // Ném lại lỗi để có thể xử lý ở các phần khác
-    throw error;
-  }
-};
-
 export const confirmLoginApi = async (axiosInstance, account, password) => {
   try {
     const res = await axiosInstance.post(`auth/confirmLogin`, {
@@ -66,9 +53,9 @@ export const registerApi = async (
   }
 };
 
-export const logoutApi = async (axiosInstance) => {
+export const logoutApi = async (axiosInstance, userId) => {
   try {
-    const res = axiosInstance.post(`auth/logout`);
+    const res = await axiosInstance.post(`auth/logout?id=${userId}`);
     return res;
   } catch (error) {
     return error;

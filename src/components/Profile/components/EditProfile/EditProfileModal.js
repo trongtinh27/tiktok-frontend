@@ -129,8 +129,9 @@ function EditProfileModal({ isOpen, onClose }) {
 
       setLoading(false);
     };
-
-    fetchApi();
+    if (isOpen) {
+      fetchApi();
+    }
   }, [debounce, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

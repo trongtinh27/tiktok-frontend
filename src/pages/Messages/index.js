@@ -19,7 +19,7 @@ function Messages() {
   const axiosInstance = useAxiosWithInterceptor();
   const [messages, setMessages] = useState([]);
   const stompClientRef = useRef(null);
-  const [roomId, setRoomId] = useState(3);
+  const [roomId, setRoomId] = useState(0);
   const [receiverId, setReceiverId] = useState();
   const [listFriend, setListFriend] = useState([]);
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ function Messages() {
   const onMessageReceived = (payload) => {
     var message = JSON.parse(payload.body);
     setMessages((prevMessages) => [...prevMessages, message]);
-    console.log(message);
   };
 
   const connect = () => {
@@ -38,11 +37,21 @@ function Messages() {
     client.connect({}, onConnected, onError);
 
     stompClientRef.current = client; // Lưu giá trị stompClient vào ref
-    console.log(stompClientRef.current);
+    // console.log("Stomp Client Connected:", stompClientRef.current.connected);
+  };
+
+  const disconnect = () => {
+    if (stompClientRef.current) {
+      stompClientRef.current.disconnect(() => {
+        console.log("Disconnected from WebSocket");
+      });
+      stompClientRef.current = null;
+    }
   };
 
   const onConnected = () => {
     // Subscribe to the Public Topic
+    // console.log(`Subscribed to /queue/messages/${roomId}`);
     if (roomId) {
       stompClientRef.current.subscribe(
         `/queue/messages/${roomId}`, // Đăng ký tới phòng dựa trên roomId
@@ -52,7 +61,7 @@ function Messages() {
   };
 
   const onError = (error) => {
-    console.log("Could not connect to WebSocket! " + error);
+    console.error("Could not connect to WebSocket! " + error);
   };
 
   useEffect(() => {
@@ -62,7 +71,6 @@ function Messages() {
           axiosInstance,
           user.id
         );
-
         if (fetchApi.status === 200) {
           setListFriend(fetchApi.data);
         } else {
@@ -75,7 +83,16 @@ function Messages() {
     } else {
       navigate("/"); // Điều hướng đến trang 404 nếu username không hợp lệ
     }
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (roomId) {
+      connect();
+    }
+    return () => {
+      disconnect();
+    };
+  }, [roomId]);
 
   return (
     <div className={cx("main-content-messages")}>
@@ -96,6 +113,7 @@ function Messages() {
                 <MessageItem
                   key={friend.id}
                   data={friend}
+                  disconnect={disconnect}
                   connect={connect}
                   onConnected={onConnected}
                   axiosInstance={axiosInstance}
